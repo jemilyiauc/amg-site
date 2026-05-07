@@ -42,7 +42,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <section id="curated">
     <h2>Curated by</h2>
     <div class="cards-row">
-      <div class="card">
+      <div class="card expanded">
         <div class="card-img"></div>
         <div class="card-body">
           <span class="card-role">2018 Chairman</span>
@@ -129,6 +129,22 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </div>
   </footer>
 `
+
+const cardsRow = document.querySelector<HTMLElement>('.cards-row')!
+const cards = Array.from(document.querySelectorAll<HTMLElement>('.card'))
+const COLLAPSED_W = 240
+const GAP = 14
+
+document.querySelectorAll<HTMLElement>('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    if (card.classList.contains('expanded')) return
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'))
+    card.classList.add('expanded')
+    const idx = cards.indexOf(card)
+    // Scroll so this card lands at the row's left padding (40px) in its final position
+    cardsRow.scrollLeft = idx * (COLLAPSED_W + GAP)
+  })
+})
 
 VANTA.NET({
   el: '#vanta-bg',
