@@ -27,7 +27,7 @@
   font-family: var(--sans);
   font-weight: 300;
   color: var(--black);
-  background: var(--white);
+  background: transparent;
   font-size: 16px;
   line-height: 1.2;
   -webkit-font-smoothing: antialiased;
@@ -40,8 +40,15 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  background: transparent;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
 }
 
 h1, h2, h3, h4 {
@@ -65,7 +72,8 @@ p {
   border-bottom: 1px solid var(--gray-200);
   position: sticky;
   top: 0;
-  background: var(--white);
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(8px);
   z-index: 100;
 }
 
@@ -327,7 +335,7 @@ p {
 #explore {
   text-align: center;
   padding: 96px 40px;
-  background: var(--gray-100);
+  background: rgba(242, 242, 242, 0.85);
   border-top: 1px solid var(--gray-200);
 }
 
@@ -347,7 +355,8 @@ p {
 /* ─── Footer ─── */
 
 #footer {
-  background: var(--white);
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
   border-top: 1px solid var(--gray-200);
   padding: 0 40px;
 }
