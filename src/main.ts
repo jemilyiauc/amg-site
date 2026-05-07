@@ -73,6 +73,16 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         </div>
       </div>
     </div>
+    <div class="carousel-controls">
+      <button class="carousel-arrow" id="prev-card">&#8592;</button>
+      <div class="carousel-dots">
+        <button class="dot active"></button>
+        <button class="dot"></button>
+        <button class="dot"></button>
+        <button class="dot"></button>
+      </div>
+      <button class="carousel-arrow" id="next-card">&#8594;</button>
+    </div>
   </section>
 
   <section id="approach">
@@ -132,18 +142,38 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
 const cardsRow = document.querySelector<HTMLElement>('.cards-row')!
 const cards = Array.from(document.querySelectorAll<HTMLElement>('.card'))
+const dots = Array.from(document.querySelectorAll<HTMLElement>('.dot'))
 const COLLAPSED_W = 240
 const GAP = 14
 
-document.querySelectorAll<HTMLElement>('.card').forEach(card => {
+function expandCard(idx: number) {
+  cards.forEach(c => c.classList.remove('expanded'))
+  dots.forEach(d => d.classList.remove('active'))
+  cards[idx].classList.add('expanded')
+  dots[idx].classList.add('active')
+  cardsRow.scrollLeft = idx * (COLLAPSED_W + GAP)
+}
+
+cards.forEach(card => {
   card.addEventListener('click', () => {
-    if (card.classList.contains('expanded')) return
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'))
-    card.classList.add('expanded')
     const idx = cards.indexOf(card)
-    // Scroll so this card lands at the row's left padding (40px) in its final position
-    cardsRow.scrollLeft = idx * (COLLAPSED_W + GAP)
+    if (cards[idx].classList.contains('expanded')) return
+    expandCard(idx)
   })
+})
+
+dots.forEach((dot, i) => {
+  dot.addEventListener('click', () => expandCard(i))
+})
+
+document.getElementById('prev-card')!.addEventListener('click', () => {
+  const current = cards.findIndex(c => c.classList.contains('expanded'))
+  expandCard(Math.max(0, current - 1))
+})
+
+document.getElementById('next-card')!.addEventListener('click', () => {
+  const current = cards.findIndex(c => c.classList.contains('expanded'))
+  expandCard(Math.min(cards.length - 1, current + 1))
 })
 
 VANTA.NET({

@@ -254,6 +254,7 @@ p {
   scrollbar-width: none;
   -ms-overflow-style: none;
   padding: 0 40px;
+  height: calc(48vh + 90px);
 }
 
 .cards-row::-webkit-scrollbar {
@@ -263,10 +264,12 @@ p {
 .card {
   flex-shrink: 0;
   width: 240px;
+  height: calc(48vh + 90px);
   border: 1px solid var(--gray-200);
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
+  position: relative;
   transition:
     width 0.5s cubic-bezier(0.4, 0, 0.2, 1),
     border-color 0.2s,
@@ -285,47 +288,107 @@ p {
 }
 
 .card-img {
+  position: absolute;
+  inset: 0;
   background: var(--gray-100);
-  height: 40vh;
-  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card.expanded .card-img {
-  height: 52vh;
 }
 
 .card-body {
-  padding: 14px 16px 18px;
-  transition: padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: absolute;
+  inset: 0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 35%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease 0.15s;
 }
 
 .card.expanded .card-body {
-  padding: 20px 24px 28px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.card.expanded .card-role,
+.card.expanded .card-body h3,
+.card.expanded .card-body p {
+  color: #fff;
 }
 
 .card-role {
   font-size: 11px;
   color: var(--text-muted);
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .card-body h3 {
-  font-size: 14px;
-  margin: 0 0 5px;
+  font-size: 16px;
+  margin: 0 0 8px;
 }
 
 .card-body p {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.3s 0.25s, transform 0.3s 0.25s;
 }
 
-.card.expanded .card-body p {
-  opacity: 1;
-  transform: none;
+/* ─── Carousel controls ─── */
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px 40px 0;
+}
+
+.carousel-arrow {
+  background: none;
+  border: 1px solid var(--gray-200);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--black);
+  transition: border-color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.carousel-arrow:hover {
+  border-color: #aaa;
+  background: var(--gray-50);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gray-200);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.dot.active {
+  background: var(--black);
+  transform: scale(1.4);
+}
+
+.dot:hover:not(.active) {
+  background: #aaa;
 }
 
 /* ─── Approach ─── */
