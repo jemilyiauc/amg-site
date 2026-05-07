@@ -4,7 +4,7 @@ declare const VANTA: any
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <nav id="navbar">
-    <span class="nav-brand">AMG</span>
+    <img src="/AMG_logo.png" class="nav-brand" alt="AMG">
     <a href="#" class="btn btn-outline">Request Access</a>
   </nav>
 
@@ -110,7 +110,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
   <footer id="footer">
     <div class="footer-main">
-      <span class="footer-brand">AMG</span>
+      <img src="/AMG_logo.png" class="footer-brand" alt="AMG">
       <div class="footer-cols">
         <div class="footer-col">
           <h4>Learn</h4>
