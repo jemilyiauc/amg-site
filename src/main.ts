@@ -14,33 +14,28 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <a href="#" class="btn btn-primary">Request Access</a>
   </section>
 
-  <section id="stats">
-    <h2>A highly curated ecosytem</h2>
-    <p class="section-sub">Gain access to strategic initiatives, deal flow, and private networks across industries.</p>
-    <div class="stat-row">
-      <div class="stat">
-        <span class="stat-num">0+</span>
-        <span class="stat-label">Executives</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">0+</span>
-        <span class="stat-label">Investors</span>
-      </div>
-      <div class="stat">
-        <span class="stat-num">0+</span>
-        <span class="stat-label">Founders</span>
-      </div>
-    </div>
-  </section>
 
   <section id="portfolio">
     <h2>Portfolio &amp; partners</h2>
-    <div class="logo-row">
-      <div class="logo-box"></div>
-      <div class="logo-box"></div>
-      <div class="logo-box"></div>
-      <div class="logo-box"></div>
-      <div class="logo-box"></div>
+    <div class="marquee-wrapper">
+      <div class="marquee-track">
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+        <div class="logo-box"></div>
+      </div>
     </div>
   </section>
 
