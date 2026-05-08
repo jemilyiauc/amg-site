@@ -1,6 +1,6 @@
 import './style.css'
 
-declare const VANTA: any
+declare const THREE: any
 
 // Scroll fade in/out
 const revealTargets = [
@@ -56,12 +56,32 @@ const observer = new IntersectionObserver(
 revealEls.forEach((el) => observer.observe(el))
 
 // Request Access modal
-const modal = document.getElementById('request-modal')!
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxe1VE1SUj_RiDtN-jAk9Hd03Kgw4p8OqQ5FcuMle1eylFH0WFsdLpCUeDwkwxxzj5vjA/exec'
+
+const modal        = document.getElementById('request-modal')!
+const requestForm  = document.getElementById('request-form') as HTMLFormElement
+const modalSuccess = document.querySelector('.modal-success') as HTMLElement
+const modalTitle   = modal.querySelector<HTMLElement>('#modal-title')!
+const modalSub     = modal.querySelector<HTMLElement>('.modal-sub')!
+const submitBtn    = requestForm.querySelector<HTMLButtonElement>('.modal-submit')!
+
+const showForm = () => {
+  requestForm.hidden = false
+  requestForm.reset()
+  submitBtn.disabled = false
+  submitBtn.textContent = 'Submit'
+  modalTitle.hidden = false
+  modalSub.hidden = false
+  modalSuccess.hidden = true
+}
+
 const openModal = () => {
+  showForm()
   modal.classList.add('open')
   modal.setAttribute('aria-hidden', 'false')
   document.body.style.overflow = 'hidden'
 }
+
 const closeModal = () => {
   modal.classList.remove('open')
   modal.setAttribute('aria-hidden', 'true')
@@ -76,9 +96,24 @@ modal.querySelector('.modal-close')!.addEventListener('click', closeModal)
 modal.addEventListener('click', (e) => { if (e.target === modal) closeModal() })
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal() })
 
-document.getElementById('request-form')!.addEventListener('submit', (e) => {
+requestForm.addEventListener('submit', (e) => {
   e.preventDefault()
-  closeModal()
+  submitBtn.disabled = true
+  submitBtn.textContent = 'Sending…'
+
+  const body = new URLSearchParams({
+    name:    (requestForm.querySelector('#f-name')    as HTMLInputElement).value,
+    company: (requestForm.querySelector('#f-company') as HTMLInputElement).value,
+    email:   (requestForm.querySelector('#f-email')   as HTMLInputElement).value,
+    note:    (requestForm.querySelector('#f-note')    as HTMLTextAreaElement).value,
+  })
+
+  fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {})
+
+  requestForm.hidden = true
+  modalTitle.hidden = true
+  modalSub.hidden = true
+  modalSuccess.hidden = false
 })
 
 // Hide/show navbar on scroll direction
@@ -111,18 +146,90 @@ const updateUnlock = () => {
 window.addEventListener('scroll', updateUnlock, { passive: true })
 updateUnlock()
 
-VANTA.CLOUDS({
-  el: '#vanta-bg',
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  skyColor: 0x1e3050,
-  cloudColor: 0x8598BB,
-  sunColor: 0x617393,
-  sunGlareColor: 0x617393,
-  sunlightColor: 0x617393,
-  speed: 0.30,
-})
+// Animated light beam — Three.js shader (ref: "To recreate the animated light beam.txt")
+const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false })
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+renderer.setSize(window.innerWidth, window.innerHeight)
+renderer.domElement.style.cssText = 'position:absolute;inset:0;width:100%;height:100%'
+document.getElementById('vanta-bg')!.appendChild(renderer.domElement)
+
+const scene  = new THREE.Scene()
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1)
+
+const vertexShader = /* glsl */`
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`
+
+const fragmentShader = /* glsl */`
+  uniform float uTime;
+  varying vec2 vUv;
+
+  // Value noise (replaces the broken Perlin stub in the reference)
+  float hash(vec2 p) {
+    p = fract(p * vec2(234.34, 435.345));
+    p += dot(p, p + 34.23);
+    return fract(p.x * p.y);
+  }
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(
+      mix(hash(i),                hash(i + vec2(1.0, 0.0)), u.x),
+      mix(hash(i + vec2(0.0,1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+      u.y
+    );
+  }
+
+  void main() {
+    vec2 uv  = vUv;
+    vec2 muv = uv * 2.0 - 1.0;   // origin at center
+
+    // 1. Vertical beam — fans out downward from center-top
+    float beamWidth = mix(0.01, 0.10, pow(1.0 - uv.y, 2.0));
+    float yBeam = 1.0 - smoothstep(0.001, beamWidth, abs(muv.x));
+    yBeam *= noise(uv * 1.5 + vec2(0.0, uTime * 0.18)) * 0.85;
+    vec3 yBeamCol = mix(
+      vec3(0.80, 0.88, 1.00),
+      vec3(0.12, 0.28, 0.75),
+      smoothstep(0.0, 1.0, abs(muv.x) / max(beamWidth, 0.001))
+    );
+
+    // 2. Horizontal radial spread at origin
+    float spread = smoothstep(0.35, 0.0,
+      length(vec2(muv.x * 0.65, uv.y * 0.75 + noise(uv * 0.4 + vec2(uTime * 0.08, 0.0)) * 0.08))
+    );
+    spread *= (noise(uv * 1.2 + vec2(uTime * 0.12, 0.0)) + 0.3) * 0.7;
+    vec3 spreadCol = mix(vec3(0.48, 0.64, 1.00), vec3(0.06, 0.14, 0.48), uv.y);
+
+    // Combine
+    vec3 bgCol  = vec3(0.02, 0.03, 0.06);
+    float mask  = clamp(yBeam + spread, 0.0, 1.0);
+    vec3  beams = yBeam * yBeamCol + spread * spreadCol;
+    vec3  final = mix(bgCol, beams, mask);
+
+    gl_FragColor = vec4(final, 1.0);
+  }
+`
+
+const uniforms = { uTime: { value: 0.0 } }
+const mesh = new THREE.Mesh(
+  new THREE.PlaneGeometry(2, 2),
+  new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader })
+)
+scene.add(mesh)
+
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight)
+}, { passive: true })
+
+;(function animate(t: number) {
+  uniforms.uTime.value = t * 0.001
+  renderer.render(scene, camera)
+  requestAnimationFrame(animate)
+})(0)
 

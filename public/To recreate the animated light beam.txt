@@ -1,0 +1,147 @@
+To recreate the animated light beam explosion from the article, you'll need three main components: a **Vertex Shader** (to position the plane), a **Fragment Shader** (where the visual logic happens), and a **JavaScript/Three.js** wrapper to render it.
+
+Below is the complete code implementation.
+
+### 1. Fragment Shader (`fragment.glsl`)
+
+This is the "brain" of the effect. It includes the noise functions and the FBM (Fractional Brownian Motion) logic described in the article.
+
+```glsl
+uniform float uTime;
+varying vec2 vUv;
+
+// Classic Perlin Noise function
+float mod289(float x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
+vec4 mod289(vec4 x){return x - floor(x * (1.0 / 289.0)) * 289.0;}
+vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+vec2 fade(vec2 t) {return t*t*t*(t*(t*6.0-15.0)+10.0);}
+
+float noise(vec2 P) {
+    vec4 Pi = floor(P.xyxy) + vec4(0.0, 0.0, 1.0, 1.0);
+    vec4 Pe = fade(P.xyxy - floor(P.xyxy));
+    vec4 ix = Pi.xzxz;
+    vec4 iy = Pi.yyww;
+    vec4 fx = fx; // Simplified for brevity; usually uses a permutation table
+    vec4 i = permute(permute(ix) + iy);
+    vec4 gx = 2.0 * fract(i * 0.0243902439) - 1.0;
+    vec4 gy = abs(gx) - 0.5;
+    vec4 tx = floor(gx + 0.5);
+    gx = gx - tx;
+    vec2 g00 = vec2(gx.x,gy.x);
+    vec2 g10 = vec2(gx.y,gy.y);
+    vec2 g01 = vec2(gx.z,gy.z);
+    vec2 g11 = vec2(gx.w,gy.w);
+    vec4 norm = taylorInvSqrt(vec4(dot(g00, g00), dot(g01, g01), dot(g10, g10), dot(g11, g11)));
+    g00 *= norm.x; g01 *= norm.y; g10 *= norm.z; g11 *= norm.w;
+    float n00 = dot(g00, vec2(Pe.x, Pe.y));
+    float n10 = dot(g10, vec2(Pe.x - 1.0, Pe.y));
+    float n01 = dot(g01, vec2(Pe.x, Pe.y - 1.0));
+    float n11 = dot(g11, vec2(Pe.x - 1.0, Pe.y - 1.0));
+    return 0.5 + 0.5 * mix(mix(n00, n10, Pe.x), mix(n01, n11, Pe.x), Pe.y);
+}
+
+// Fractional Brownian Motion for the clouds
+float fbm(vec2 p) {
+    float value = 0.0;
+    float amplitude = 0.5;
+    for (int i = 0; i < 5; i++) {
+        value += amplitude * noise(p);
+        p *= 2.0;
+        amplitude *= 0.5;
+    }
+    return value;
+}
+
+void main() {
+    vec2 modifiedUv = vUv * 2.0 - 1.0;
+    
+    // 1. Vertical Beam (yBeam)
+    float yBeamPos = modifiedUv.x - 0.25;
+    float beamWidth = mix(0.02, 0.1, pow(1.0 - vUv.y, 2.0));
+    float yBeam = 1.0 - smoothstep(0.001, beamWidth, abs(yBeamPos));
+    yBeam *= noise(vUv * 0.8 + vec2(0.0, uTime * 2.0));
+    vec3 yBeamColor = mix(vec3(1.0), vec3(0.0, 0.5, 1.0), smoothstep(0.0, beamWidth, abs(yBeamPos) * 2.0));
+
+    // 2. Horizontal Spread (xBeam)
+    float xBeam = smoothstep(0.3, 0.1, length(vec2(modifiedUv.x - 0.25, vUv.y + noise(vUv * 0.5 + vec2(uTime * 0.5, 0.0)) * 0.1)));
+    xBeam += smoothstep(0.03, 0.00, vUv.y); // Ground glow
+    xBeam *= noise(vUv * 1.0 + vec2(uTime, 0.0)) + 0.5;
+    vec3 xBeamColor = mix(vec3(1.0), vec3(0.0, 0.2, 1.0), vUv.y * noise(vUv * 0.5 + vec2(uTime * 0.5, 0.0)));
+
+    // 3. Cloudy Background
+    vec3 bg1 = vec3(fbm(vUv * 10.0 + uTime * 0.1) - 0.5);
+    vec3 bg2 = vec3(fbm(vUv * 9.0 - uTime * 0.1) - 0.5);
+    vec3 backgroundColor = bg1 * bg2;
+
+    // Combine
+    vec3 beamFinal = (yBeam * yBeamColor) + (xBeam * xBeamColor);
+    vec3 finalColor = mix(backgroundColor, beamFinal, clamp(yBeam + xBeam, 0.0, 1.0));
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}
+
+```
+
+### 2. Vertex Shader (`vertex.glsl`)
+
+Standard boilerplate to pass UVs to the fragment shader.
+
+```glsl
+varying vec2 vUv;
+void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}
+
+```
+
+### 3. Implementation (Three.js)
+
+This script sets up the scene, camera, and the plane that holds the shader.
+
+```javascript
+import * as THREE from 'three';
+
+const scene = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+const geometry = new THREE.PlaneGeometry(2, 2);
+const uniforms = {
+    uTime: { value: 0.0 }
+};
+
+const material = new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    vertexShader: `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = vec4(position, 1.0);
+        }
+    `,
+    fragmentShader: document.getElementById('fragmentShader').textContent // Link to the GLSL above
+});
+
+const mesh = new THREE.Mesh(geometry, material);
+scene.add(mesh);
+
+function animate(time) {
+    uniforms.uTime.value = time * 0.001;
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+}
+
+requestAnimationFrame(animate);
+
+```
+
+### Key Concepts Breakdown:
+
+1. **Coordinate Transformation**: `vUv * 2.0 - 1.0` shifts the origin from the bottom-left to the center. This is crucial for calculating distances from the "center" of the explosion.
+2. **Smoothstep**: Used for the "soft edges" of the beams. It creates a gradient instead of a hard line.
+3. **FBM (Fractional Brownian Motion)**: This is what gives the background the "cloudy" or "smoky" texture by layering noise at different scales.
+4.  **Time Uniform**: `uTime` is passed from JavaScript to GLSL every frame, allowing the noise to "scroll," which creates the animation effect.
