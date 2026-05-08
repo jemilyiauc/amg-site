@@ -24,8 +24,8 @@
   --gray-100: #1e3050;
   --gray-200: #253d5f;
   --text-muted: #8a9fb8;
-  --silver: #a8a8a8;
-  --silver-dark: #505050;
+  --silver: #d4d4d4;
+  --silver-dark: #606060;
   --max-w: 1100px;
   --sans: 'Zalando Sans', system-ui, -apple-system, sans-serif;
 
@@ -131,10 +131,10 @@ p {
   background:
     linear-gradient(
       90deg,
-      #222 0%, #484848 20%, #787878 35%,
-      #a8a8a8 46%, #bebebe 50%,
-      #a8a8a8 54%, #787878 65%,
-      #484848 80%, #222 100%
+      #222 0%, #525252 20%, #909090 35%,
+      #d0d0d0 46%, #e8e8e8 50%,
+      #d0d0d0 54%, #909090 65%,
+      #525252 80%, #222 100%
     ),
     repeating-linear-gradient(
       174deg,
@@ -148,10 +148,10 @@ p {
   background-size: 300% auto, 4px 4px;
   background-position: var(--shine-pos, 50%) center, 0 0;
   background-blend-mode: normal, overlay;
-  color: var(--white);
+  color: var(--navy);
   padding: 12px 28px;
   font-size: 17px;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  text-shadow: none;
   transition: background-position 0.5s ease, opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -168,16 +168,17 @@ p {
 
 /* ─── Metal Animation ─── */
 
+h1, h2, h3, h4,
 #hero h1,
 #explore h2,
 #unlock h2 {
   background:
     linear-gradient(
       90deg,
-      #222 0%, #484848 20%, #787878 35%,
-      #a8a8a8 46%, #bebebe 50%,
-      #a8a8a8 54%, #787878 65%,
-      #484848 80%, #222 100%
+      #222 0%, #525252 20%, #909090 35%,
+      #d0d0d0 46%, #e8e8e8 50%,
+      #d0d0d0 54%, #909090 65%,
+      #525252 80%, #222 100%
     ),
     repeating-linear-gradient(
       174deg,
@@ -620,6 +621,10 @@ p {
 }
 
 .modal-box h2 {
+  background: none;
+  -webkit-text-fill-color: var(--black);
+  color: var(--black);
+  background-clip: unset;
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.4px;
