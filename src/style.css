@@ -70,9 +70,8 @@ p {
   padding: 0 40px;
   height: 52px;
   position: sticky;
-  top: 0;
-  background: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(8px);
+  top: 24px;
+  background: transparent;
   z-index: 100;
 }
 
@@ -418,18 +417,12 @@ p {
 /* ─── Footer ─── */
 
 #footer {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(8px);
+  background: var(--white);
   padding: 0 40px;
 }
 
 .footer-main {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 40px 0 36px;
-  max-width: var(--max-w);
-  margin: 0 auto;
+  display: none;
 }
 
 .footer-brand {
@@ -496,10 +489,9 @@ p {
 }
 
 .footer-bottom {
-  border-top: 1px solid var(--gray-200);
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 16px 0;
+  border-top: none;
+  padding: 24px 0;
+  text-align: center;
 }
 
 .footer-bottom span {
