@@ -471,18 +471,6 @@ p {
   position: relative;
 }
 
-@media (hover: none) and (pointer: coarse) {
-  .glass-bottom::after {
-    content: '';
-    position: absolute;
-    bottom: -300px;
-    left: 0;
-    right: 0;
-    height: 300px;
-    background: rgba(9, 13, 22, 0.75);
-    pointer-events: none;
-  }
-}
 
 /* ─── Explore ─── */
 
