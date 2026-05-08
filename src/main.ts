@@ -166,6 +166,7 @@ const vertexShader = /* glsl */`
 
 const fragmentShader = /* glsl */`
   uniform float uTime;
+  uniform float uScroll;
   varying vec2 vUv;
 
   // Value noise (replaces the broken Perlin stub in the reference)
@@ -189,13 +190,15 @@ const fragmentShader = /* glsl */`
     vec2 uv  = vUv;
     vec2 muv = uv * 2.0 - 1.0;   // origin at center
 
-    // 1. Vertical beam — fans out downward from center-top
-    float beamWidth = mix(0.01, 0.10, pow(1.0 - uv.y, 2.0));
+    // 1. Vertical beam — both ends widen as user scrolls
+    float topWidth    = mix(0.04, 0.70, uScroll);
+    float bottomWidth = mix(0.20, 1.20, uScroll);
+    float beamWidth   = mix(topWidth, bottomWidth, pow(1.0 - uv.y, 2.0));
     float yBeam = 1.0 - smoothstep(0.001, beamWidth, abs(muv.x));
-    yBeam *= noise(uv * 1.5 + vec2(0.0, uTime * 0.18)) * 0.85;
+    yBeam *= noise(uv * 1.5 + vec2(0.0, uTime * 0.18)) * 1.0;
     vec3 yBeamCol = mix(
-      vec3(0.80, 0.88, 1.00),
-      vec3(0.12, 0.28, 0.75),
+      vec3(0.88, 0.94, 1.00),
+      vec3(0.15, 0.32, 0.82),
       smoothstep(0.0, 1.0, abs(muv.x) / max(beamWidth, 0.001))
     );
 
@@ -207,7 +210,7 @@ const fragmentShader = /* glsl */`
     vec3 spreadCol = mix(vec3(0.48, 0.64, 1.00), vec3(0.06, 0.14, 0.48), uv.y);
 
     // Combine
-    vec3 bgCol  = vec3(0.02, 0.03, 0.06);
+    vec3 bgCol  = vec3(0.063, 0.075, 0.118);
     float mask  = clamp(yBeam + spread, 0.0, 1.0);
     vec3  beams = yBeam * yBeamCol + spread * spreadCol;
     vec3  final = mix(bgCol, beams, mask);
@@ -216,7 +219,7 @@ const fragmentShader = /* glsl */`
   }
 `
 
-const uniforms = { uTime: { value: 0.0 } }
+const uniforms = { uTime: { value: 0.0 }, uScroll: { value: 0.0 } }
 const mesh = new THREE.Mesh(
   new THREE.PlaneGeometry(2, 2),
   new THREE.ShaderMaterial({ uniforms, vertexShader, fragmentShader })
@@ -225,6 +228,11 @@ scene.add(mesh)
 
 window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight)
+}, { passive: true })
+
+window.addEventListener('scroll', () => {
+  const maxScroll = document.body.scrollHeight - window.innerHeight
+  uniforms.uScroll.value = maxScroll > 0 ? window.scrollY / maxScroll : 0
 }, { passive: true })
 
 ;(function animate(t: number) {
