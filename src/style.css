@@ -80,6 +80,12 @@ p {
   height: 52px;
   width: auto;
   display: block;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-brand:hover {
+  transform: scale(1.05);
+  opacity: 0.85;
 }
 
 /* ─── Buttons ─── */
@@ -95,7 +101,7 @@ p {
   text-decoration: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: opacity 0.15s;
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
   border: none;
 }
 
@@ -107,6 +113,8 @@ p {
 
 .btn-outline:hover {
   background: var(--gray-50);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
 .btn-primary {
@@ -117,7 +125,14 @@ p {
 }
 
 .btn-primary:hover {
-  opacity: 0.82;
+  opacity: 0.85;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 /* ─── Hero ─── */
@@ -224,6 +239,12 @@ p {
   margin-right: 20px;
   background: var(--gray-100);
   border-radius: 4px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.logo-box:hover {
+  background: var(--gray-200);
+  transform: scale(1.04);
 }
 
 /* 8 boxes × (160px + 20px margin) = 1440px — exactly half the track */
@@ -357,6 +378,13 @@ p {
   font-size: 20px;
   font-style: italic;
   padding: 18px 0;
+  transition: color 0.2s ease, letter-spacing 0.2s ease;
+  cursor: default;
+}
+
+#unlock li:hover {
+  color: var(--text-muted);
+  letter-spacing: 0.3px;
 }
 
 /* ─── Explore ─── */
@@ -431,10 +459,13 @@ p {
   font-size: 15px;
   color: var(--text-muted);
   text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-block;
 }
 
 .footer-col a:hover {
   color: var(--black);
+  transform: translateX(3px);
 }
 
 .social-row {
@@ -451,6 +482,12 @@ p {
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.social-icon:hover {
+  transform: scale(1.2);
+  opacity: 0.7;
 }
 
 .social-icon svg {
@@ -469,6 +506,16 @@ p {
   font-size: 14px;
   color: var(--text-muted);
 }
+
+/* ─── Scroll Animations ─── */
+
+.scroll-hidden,
+.scroll-visible {
+  transition: opacity 1s ease;
+}
+
+.scroll-hidden { opacity: 0; }
+.scroll-visible { opacity: 1; }
 
 /* ─── Responsive ─── */
 
