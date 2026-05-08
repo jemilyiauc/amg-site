@@ -440,12 +440,20 @@ p {
 }
 
 
+/* ─── Glass bottom wrapper (explore + footer share one backdrop) ─── */
+
+.glass-bottom {
+  background: rgba(9, 13, 22, 0.75);
+  backdrop-filter: blur(24px);
+  border-radius: 60px 60px 0 0;
+}
+
 /* ─── Explore ─── */
 
 #explore {
   text-align: center;
   padding: 60px;
-  background: var(--navy);
+  background: transparent;
   border-radius: 0;
   width: 100%;
   aspect-ratio: 3 / 1;
@@ -454,19 +462,6 @@ p {
   align-items: center;
   justify-content: center;
   position: relative;
-}
-
-#explore::before {
-  content: '';
-  position: absolute;
-  top: -44px;
-  left: -10%;
-  width: 120%;
-  height: 88px;
-  background: transparent;
-  border-radius: 0 0 50% 50%;
-  box-shadow: 0 44px 0 0 var(--navy);
-  pointer-events: none;
 }
 
 #explore h2 {
@@ -485,7 +480,7 @@ p {
 /* ─── Footer ─── */
 
 #footer {
-  background: var(--navy);
+  background: transparent;
   padding: 0 40px;
 }
 
@@ -825,10 +820,13 @@ p {
     gap: 32px;
   }
 
+  .glass-bottom {
+    border-radius: 30px 30px 0 0;
+  }
+
   #explore {
     aspect-ratio: unset;
     min-height: 280px;
-    border-radius: 30% 30% 0 0;
   }
 
   #explore h2 {
