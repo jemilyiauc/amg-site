@@ -23,7 +23,7 @@
   --gray-50: #162236;
   --gray-100: #1e3050;
   --gray-200: #253d5f;
-  --text-muted: #8a9fb8;
+  --text-muted: rgba(255,255,255,0.82);
   --silver: #d4d4d4;
   --silver-dark: #606060;
   --max-w: 1100px;
@@ -150,32 +150,13 @@ p {
 }
 
 .btn-primary {
-  background:
-    linear-gradient(
-      90deg,
-      #222 0%, #525252 20%, #909090 35%,
-      #d0d0d0 46%, #e8e8e8 50%,
-      #d0d0d0 54%, #909090 65%,
-      #525252 80%, #222 100%
-    ),
-    repeating-linear-gradient(
-      174deg,
-      rgba(255,255,255,0.22) 0px,
-      rgba(255,255,255,0.22) 1px,
-      rgba(0,0,0,0.14) 1px,
-      rgba(0,0,0,0.14) 2px,
-      transparent 2px,
-      transparent 4px
-    );
-  background-size: 300% auto, 4px 4px;
-  background-position: var(--shine-pos, 50%) center, 0 0;
-  background-blend-mode: normal, overlay;
+  background: var(--white);
   color: var(--navy);
   padding: 12px 28px;
   font-size: 17px;
   text-shadow: none;
-  box-shadow: 0 0 24px rgba(200,200,200,0.2);
-  transition: background-position 0.5s ease, opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 0 24px rgba(200,200,200,0.15);
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
@@ -189,39 +170,6 @@ p {
   box-shadow: none;
 }
 
-/* ─── Metal Animation ─── */
-
-h1, h2, h3, h4,
-#hero h1,
-#explore h2,
-#unlock h2 {
-  background:
-    linear-gradient(
-      90deg,
-      #222 0%, #525252 20%, #909090 35%,
-      #d0d0d0 46%, #e8e8e8 50%,
-      #d0d0d0 54%, #909090 65%,
-      #525252 80%, #222 100%
-    ),
-    repeating-linear-gradient(
-      174deg,
-      rgba(255,255,255,0.22) 0px,
-      rgba(255,255,255,0.22) 1px,
-      rgba(0,0,0,0.14) 1px,
-      rgba(0,0,0,0.14) 2px,
-      transparent 2px,
-      transparent 4px
-    );
-  background-size: 300% auto, 4px 4px;
-  background-position: var(--shine-pos, 50%) center, 0 0;
-  background-blend-mode: normal, overlay;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-  transition: background-position 0.5s ease;
-  filter: drop-shadow(0 0 18px rgba(200,200,200,0.18));
-}
 
 /* ─── Hero ─── */
 
@@ -497,14 +445,28 @@ h1, h2, h3, h4,
 #explore {
   text-align: center;
   padding: 60px;
-  background: radial-gradient(ellipse at center bottom, var(--navy) 0%, var(--navy) 55%, transparent 85%);
-  border-radius: 50% 50% 0 0;
+  background: var(--navy);
+  border-radius: 0;
   width: 100%;
   aspect-ratio: 3 / 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+#explore::before {
+  content: '';
+  position: absolute;
+  top: -44px;
+  left: -10%;
+  width: 120%;
+  height: 88px;
+  background: transparent;
+  border-radius: 0 0 50% 50%;
+  box-shadow: 0 44px 0 0 var(--navy);
+  pointer-events: none;
 }
 
 #explore h2 {
@@ -664,10 +626,6 @@ h1, h2, h3, h4,
 }
 
 .modal-box h2 {
-  background: none;
-  -webkit-text-fill-color: var(--white);
-  color: var(--white);
-  background-clip: unset;
   font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.4px;
