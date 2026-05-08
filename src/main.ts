@@ -55,6 +55,13 @@ const observer = new IntersectionObserver(
 
 revealEls.forEach((el) => observer.observe(el))
 
+// Mouse-driven metal shine
+document.addEventListener('mousemove', (e) => {
+  const pct = e.clientX / window.innerWidth
+  const pos = 38 + pct * 24  // maps 0→1 to 38%→62% (subtle range)
+  document.documentElement.style.setProperty('--shine-pos', `${pos}%`)
+}, { passive: true })
+
 // Request Access modal
 const modal = document.getElementById('request-modal')!
 const openModal = () => {
@@ -120,8 +127,8 @@ VANTA.NET({
   minWidth: 200.00,
   scale: 1.00,
   scaleMobile: 1.00,
-  color: 0xECECEC,
-  backgroundColor: 0xffffff,
+  color: 0x454545,
+  backgroundColor: 0x06080f,
   points: 5.00,
   maxDistance: 30.00,
   spacing: 25.00,

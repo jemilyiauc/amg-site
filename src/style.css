@@ -16,18 +16,23 @@
 
 :root {
   --black: #0a0a0a;
+  --navy: #06080f;
+  --navy-card: #0c1220;
+  --navy-border: #152030;
   --white: #ffffff;
-  --gray-50: #f8f8f8;
-  --gray-100: #f0f0f0;
-  --gray-200: #e0e0e0;
-  --text-muted: #5a5a5a;
+  --gray-50: #162236;
+  --gray-100: #1e3050;
+  --gray-200: #253d5f;
+  --text-muted: #8a9fb8;
+  --silver: #a8a8a8;
+  --silver-dark: #505050;
   --max-w: 1100px;
   --sans: 'Zalando Sans', system-ui, -apple-system, sans-serif;
 
   font-family: var(--sans);
   font-weight: 300;
-  color: var(--black);
-  background: transparent;
+  color: var(--white);
+  background: var(--navy);
   font-size: 18px;
   line-height: 1.2;
   -webkit-font-smoothing: antialiased;
@@ -43,7 +48,7 @@
 html,
 body {
   margin: 0;
-  background: transparent;
+  background: var(--navy);
 }
 
 #app {
@@ -53,7 +58,7 @@ body {
 
 h1, h2, h3, h4 {
   margin: 0;
-  color: var(--black);
+  color: var(--white);
   font-weight: 500;
 }
 
@@ -110,33 +115,87 @@ p {
 }
 
 .btn-outline {
-  background: var(--white);
-  color: var(--black);
-  border: 1px solid var(--gray-200);
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--navy-border);
 }
 
 .btn-outline:hover {
-  background: var(--gray-50);
+  background: var(--navy-card);
+  border-color: var(--silver);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(168,168,168,0.15);
 }
 
 .btn-primary {
-  background: var(--black);
+  background:
+    linear-gradient(
+      90deg,
+      #222 0%, #484848 20%, #787878 35%,
+      #a8a8a8 46%, #bebebe 50%,
+      #a8a8a8 54%, #787878 65%,
+      #484848 80%, #222 100%
+    ),
+    repeating-linear-gradient(
+      174deg,
+      rgba(255,255,255,0.22) 0px,
+      rgba(255,255,255,0.22) 1px,
+      rgba(0,0,0,0.14) 1px,
+      rgba(0,0,0,0.14) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  background-size: 300% auto, 4px 4px;
+  background-position: var(--shine-pos, 50%) center, 0 0;
+  background-blend-mode: normal, overlay;
   color: var(--white);
   padding: 12px 28px;
   font-size: 17px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  transition: background-position 0.5s ease, opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn-primary:hover {
-  opacity: 0.85;
+  opacity: 0.9;
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.28);
 }
 
 .btn:active {
   transform: translateY(0);
   box-shadow: none;
+}
+
+/* ─── Metal Animation ─── */
+
+#hero h1,
+#explore h2,
+#unlock h2 {
+  background:
+    linear-gradient(
+      90deg,
+      #222 0%, #484848 20%, #787878 35%,
+      #a8a8a8 46%, #bebebe 50%,
+      #a8a8a8 54%, #787878 65%,
+      #484848 80%, #222 100%
+    ),
+    repeating-linear-gradient(
+      174deg,
+      rgba(255,255,255,0.22) 0px,
+      rgba(255,255,255,0.22) 1px,
+      rgba(0,0,0,0.14) 1px,
+      rgba(0,0,0,0.14) 2px,
+      transparent 2px,
+      transparent 4px
+    );
+  background-size: 300% auto, 4px 4px;
+  background-position: var(--shine-pos, 50%) center, 0 0;
+  background-blend-mode: normal, overlay;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  transition: background-position 0.5s ease;
 }
 
 /* ─── Hero ─── */
@@ -298,7 +357,7 @@ p {
 }
 
 .card-body {
-  padding: 16px 0 0;
+  padding: 16px 14px 16px;
 }
 
 .card-role {
@@ -312,7 +371,7 @@ p {
 .card-body h3 {
   font-size: 19px;
   font-weight: 500;
-  color: var(--black);
+  color: var(--white);
   margin: 0 0 10px;
 }
 
@@ -347,7 +406,7 @@ p {
 .section-label {
   font-size: 18px;
   font-weight: 500;
-  color: var(--black);
+  color: var(--silver);
   display: block;
   margin-bottom: 40px;
 }
@@ -396,7 +455,7 @@ p {
 #explore {
   text-align: center;
   padding: 60px;
-  background: radial-gradient(ellipse at center bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 55%, transparent 85%);
+  background: radial-gradient(ellipse at center bottom, var(--navy) 0%, var(--navy) 55%, transparent 85%);
   border-radius: 50% 50% 0 0;
   width: 100%;
   aspect-ratio: 3 / 1;
@@ -422,7 +481,8 @@ p {
 /* ─── Footer ─── */
 
 #footer {
-  background: var(--white);
+  background: var(--navy);
+  border-top: 1px solid var(--navy-border);
   padding: 0 40px;
 }
 
@@ -462,7 +522,7 @@ p {
 }
 
 .footer-col a:hover {
-  color: var(--black);
+  color: var(--silver);
   transform: translateX(3px);
 }
 
@@ -475,7 +535,7 @@ p {
 .social-icon {
   width: 20px;
   height: 20px;
-  color: var(--black);
+  color: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
