@@ -28,7 +28,7 @@
   font-weight: 300;
   color: var(--black);
   background: transparent;
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.2;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -89,7 +89,7 @@ p {
   align-items: center;
   justify-content: center;
   padding: 8px 18px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   font-family: var(--sans);
   text-decoration: none;
@@ -113,7 +113,7 @@ p {
   background: var(--black);
   color: var(--white);
   padding: 12px 28px;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .btn-primary:hover {
@@ -131,16 +131,16 @@ p {
 }
 
 #hero h1 {
-  font-size: 52px;
+  font-size: 62px;
   letter-spacing: -1.5px;
-  margin: 0 0 20px;
+  margin: 0 0 28px;
 }
 
 .hero-sub {
-  font-size: 15px;
+  font-size: 17px;
   color: var(--text-muted);
   max-width: 360px;
-  margin: 0 auto 36px;
+  margin: 0 auto 64px;
 }
 
 /* ─── Stats ─── */
@@ -151,16 +151,16 @@ p {
 }
 
 #stats h2 {
-  font-size: 38px;
+  font-size: 44px;
   letter-spacing: -0.6px;
-  margin: 0 0 16px;
+  margin: 0 0 24px;
 }
 
 .section-sub {
-  font-size: 15px;
+  font-size: 17px;
   color: var(--text-muted);
   max-width: 330px;
-  margin: 0 auto 52px;
+  margin: 0 auto 64px;
 }
 
 .stat-row {
@@ -177,13 +177,13 @@ p {
 }
 
 .stat-num {
-  font-size: 80px;
+  font-size: 94px;
   font-weight: 500;
   letter-spacing: -3px;
 }
 
 .stat-label {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   letter-spacing: 0.3px;
 }
@@ -197,8 +197,8 @@ p {
 }
 
 #portfolio h2 {
-  font-size: 18px;
-  margin: 0 0 32px;
+  font-size: 20px;
+  margin: 0 0 44px;
   padding: 0 40px;
 }
 
@@ -241,16 +241,16 @@ p {
 
 #curated h2 {
   text-align: center;
-  font-size: 34px;
+  font-size: 40px;
   font-weight: 600;
   letter-spacing: -0.5px;
-  margin: 0 0 32px;
+  margin: 0 0 44px;
   padding: 0 40px;
 }
 
 .cards-row {
   display: flex;
-  gap: 14px;
+  gap: 32px;
   padding: 0 40px;
   justify-content: center;
   flex-wrap: wrap;
@@ -273,26 +273,26 @@ p {
 }
 
 .card-body {
-  padding: 12px 0 0;
+  padding: 16px 0 0;
 }
 
 .card-role {
-  font-size: 11px;
+  font-size: 13px;
   font-style: italic;
   color: var(--text-muted);
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
 }
 
 .card-body h3 {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 500;
   color: var(--black);
-  margin: 0 0 6px;
+  margin: 0 0 10px;
 }
 
 .card-body p {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   line-height: 1.4;
 }
@@ -300,7 +300,7 @@ p {
 .card-body ul {
   margin: 0;
   padding-left: 16px;
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   line-height: 1.5;
 }
@@ -320,15 +320,15 @@ p {
 }
 
 .section-label {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   color: var(--black);
   display: block;
-  margin-bottom: 28px;
+  margin-bottom: 40px;
 }
 
 #approach p {
-  font-size: 22px;
+  font-size: 26px;
   max-width: 520px;
   margin: 0 auto;
 }
@@ -341,9 +341,9 @@ p {
 }
 
 #unlock h2 {
-  font-size: 44px;
+  font-size: 52px;
   letter-spacing: -1px;
-  margin: 0 0 48px;
+  margin: 0 0 60px;
 }
 
 #unlock ul {
@@ -354,14 +354,9 @@ p {
 }
 
 #unlock li {
-  font-size: 17px;
+  font-size: 20px;
   font-style: italic;
   padding: 18px 0;
-  border-bottom: 1px solid var(--gray-200);
-}
-
-#unlock li:first-child {
-  border-top: 1px solid var(--gray-200);
 }
 
 /* ─── Explore ─── */
@@ -380,16 +375,16 @@ p {
 }
 
 #explore h2 {
-  font-size: 52px;
+  font-size: 62px;
   letter-spacing: -1.5px;
-  margin: 0 0 20px;
+  margin: 0 0 28px;
 }
 
 #explore p {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-muted);
-  max-width: 300px;
-  margin: 0 auto 36px;
+  max-width: 420px;
+  margin: 0 auto 64px;
 }
 
 /* ─── Footer ─── */
@@ -427,13 +422,13 @@ p {
 }
 
 .footer-col h4 {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 0.2px;
-  margin: 0 0 6px;
+  margin: 0 0 10px;
 }
 
 .footer-col a {
-  font-size: 13px;
+  font-size: 15px;
   color: var(--text-muted);
   text-decoration: none;
 }
@@ -471,7 +466,7 @@ p {
 }
 
 .footer-bottom span {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
