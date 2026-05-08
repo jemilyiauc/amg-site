@@ -14,13 +14,13 @@
     <div id="app">
       <nav id="navbar">
         <img src="/AMG_logo.png" class="nav-brand" alt="AMG">
-        <a href="#" class="btn btn-outline">Request Access</a>
+        <a href="#" class="btn btn-outline" data-modal="request">Request Access</a>
       </nav>
 
       <section id="hero">
         <h1>Get access to<br>exclusive networks<br>and opportunities</h1>
         <p class="hero-sub">A strategic platform for executives, leaders, and investors creating transformative partnerships across industries.</p>
-        <a href="#" class="btn btn-primary">Request Access</a>
+        <a href="#" class="btn btn-primary" data-modal="request">Request Access</a>
       </section>
 
       <section id="portfolio">
@@ -104,7 +104,7 @@
       <section id="explore">
         <h2>Explore<br>alignment</h2>
         <p>If you are seeking partnership, investment alignment, or strategic collaboration, we invite you to apply for access.</p>
-        <a href="#" class="btn btn-primary">Request Access</a>
+        <a href="#" class="btn btn-primary" data-modal="request">Request Access</a>
       </section>
 
       <footer id="footer">
@@ -137,6 +137,34 @@
           <span>© 2026 Artest Management Group, Inc.</span>
         </div>
       </footer>
+    </div>
+
+    <!-- Request Access Modal -->
+    <div id="request-modal" class="modal-overlay" aria-hidden="true">
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <button class="modal-close" aria-label="Close">&times;</button>
+        <h2 id="modal-title">Request Access</h2>
+        <p class="modal-sub">Tell us a bit about yourself and we'll be in touch.</p>
+        <form class="modal-form" id="request-form">
+          <div class="form-group">
+            <label for="f-name">Name <span class="required-star">*</span></label>
+            <input type="text" id="f-name" name="name" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label for="f-company">Company</label>
+            <input type="text" id="f-company" name="company" placeholder="Your company or organization">
+          </div>
+          <div class="form-group">
+            <label for="f-email">Email <span class="required-star">*</span></label>
+            <input type="email" id="f-email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="f-note">Note</label>
+            <textarea id="f-note" name="note" rows="4" placeholder="What would you like us to know?"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary modal-submit">Submit</button>
+        </form>
+      </div>
     </div>
 
     <script type="module" src="/src/main.ts"></script>

@@ -55,6 +55,46 @@ const observer = new IntersectionObserver(
 
 revealEls.forEach((el) => observer.observe(el))
 
+// Request Access modal
+const modal = document.getElementById('request-modal')!
+const openModal = () => {
+  modal.classList.add('open')
+  modal.setAttribute('aria-hidden', 'false')
+  document.body.style.overflow = 'hidden'
+}
+const closeModal = () => {
+  modal.classList.remove('open')
+  modal.setAttribute('aria-hidden', 'true')
+  document.body.style.overflow = ''
+}
+
+document.querySelectorAll('[data-modal="request"]').forEach((btn) => {
+  btn.addEventListener('click', (e) => { e.preventDefault(); openModal() })
+})
+
+modal.querySelector('.modal-close')!.addEventListener('click', closeModal)
+modal.addEventListener('click', (e) => { if (e.target === modal) closeModal() })
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal() })
+
+document.getElementById('request-form')!.addEventListener('submit', (e) => {
+  e.preventDefault()
+  closeModal()
+})
+
+// Hide/show navbar on scroll direction
+const navbar = document.querySelector<HTMLElement>('#navbar')!
+let lastScrollY = window.scrollY
+
+window.addEventListener('scroll', () => {
+  const currentScrollY = window.scrollY
+  if (currentScrollY > lastScrollY && currentScrollY > 80) {
+    navbar.classList.add('nav-hidden')
+  } else {
+    navbar.classList.remove('nav-hidden')
+  }
+  lastScrollY = currentScrollY
+}, { passive: true })
+
 // Scroll-driven fade for unlock list items
 const unlockItems = Array.from(document.querySelectorAll<HTMLElement>('#unlock li'))
 unlockItems.forEach((li) => { li.style.opacity = '0' })

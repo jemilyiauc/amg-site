@@ -73,6 +73,11 @@ p {
   top: 24px;
   background: transparent;
   z-index: 100;
+  transition: transform 0.3s ease;
+}
+
+#navbar.nav-hidden {
+  transform: translateY(calc(-100% - 32px));
 }
 
 .nav-brand {
@@ -233,7 +238,7 @@ p {
 
 .logo-box {
   width: 160px;
-  height: 64px;
+  height: 100px;
   flex-shrink: 0;
   margin-right: 20px;
   background: var(--gray-100);
@@ -499,6 +504,129 @@ p {
   color: var(--text-muted);
 }
 
+/* ─── Modal ─── */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.55);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-box {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  transform: translateY(16px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.open .modal-box {
+  transform: translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  transition: color 0.15s ease;
+}
+
+.modal-close:hover {
+  color: var(--black);
+}
+
+.modal-box h2 {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+  margin: 0 0 8px;
+}
+
+.modal-sub {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 0 0 28px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--black);
+}
+
+.required-star {
+  color: #e05;
+}
+
+.form-group input,
+.form-group textarea {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--black);
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: 6px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  resize: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--black);
+  background: var(--white);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #aaa;
+}
+
+.modal-submit {
+  width: 100%;
+  margin-top: 6px;
+  padding: 14px;
+  font-size: 15px;
+}
+
 /* ─── Scroll Animations ─── */
 
 .scroll-hidden,
@@ -511,17 +639,137 @@ p {
 
 /* ─── Responsive ─── */
 
-@media (max-width: 720px) {
+@media (max-width: 768px) {
+  #navbar {
+    padding: 0 20px;
+    top: 12px;
+  }
+
+  #hero {
+    padding: 56px 24px 64px;
+  }
+
+  #hero h1 {
+    font-size: 40px;
+    letter-spacing: -1px;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+  }
+
+  #stats {
+    padding: 60px 24px;
+  }
+
+  #stats h2 {
+    font-size: 32px;
+  }
+
+  .stat-row {
+    gap: 40px;
+  }
+
+  .stat-num {
+    font-size: 64px;
+  }
+
+  #portfolio {
+    padding: 52px 0;
+  }
+
+  #portfolio h2 {
+    font-size: 17px;
+  }
+
+  #curated {
+    padding: 52px 0;
+  }
+
+  #curated h2 {
+    font-size: 28px;
+  }
+
+  .cards-row {
+    gap: 20px;
+    padding: 0 24px;
+  }
+
   .card {
-    flex: 0 0 calc(50% - 7px);
+    flex: 0 0 calc(50% - 10px);
+  }
+
+  #approach {
+    padding: 60px 24px;
+  }
+
+  #approach p {
+    font-size: 20px;
+  }
+
+  #unlock {
+    padding: 60px 24px;
+  }
+
+  #unlock h2 {
+    font-size: 38px;
+    margin: 0 0 44px;
+  }
+
+  #unlock li {
+    font-size: 17px;
+  }
+
+  #explore {
+    aspect-ratio: 2 / 1;
+    padding: 40px 24px;
+  }
+
+  #explore h2 {
+    font-size: 42px;
+    letter-spacing: -1px;
+  }
+
+  #explore p {
+    font-size: 15px;
+    max-width: 300px;
+  }
+
+  .footer-bottom {
+    padding: 20px 0;
   }
 }
 
 @media (max-width: 480px) {
+  #hero h1 {
+    font-size: 32px;
+  }
+
   .cards-row {
     padding: 0 20px;
+    gap: 16px;
   }
+
   .card {
     flex: 0 0 100%;
+  }
+
+  .stat-row {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  #explore {
+    aspect-ratio: unset;
+    min-height: 280px;
+    border-radius: 30% 30% 0 0;
+  }
+
+  #explore h2 {
+    font-size: 34px;
+  }
+
+  #unlock h2 {
+    font-size: 32px;
   }
 }
