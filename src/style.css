@@ -45,6 +45,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html,
 body {
   margin: 0;
@@ -306,9 +310,6 @@ h1, h2, h3, h4,
   width: 100%;
 }
 
-.marquee-wrapper:hover .marquee-track {
-  animation-play-state: paused;
-}
 
 .marquee-track {
   display: flex;
