@@ -73,7 +73,7 @@ h1, h2, h3, h4 {
 
 p {
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.3;
 }
 
 /* ─── Navbar ─── */
@@ -364,20 +364,37 @@ h1, h2, h3, h4,
   flex: 0 0 280px;
   border-radius: 20px;
   overflow: hidden;
+  position: relative;
+  height: 380px;
+  cursor: pointer;
 }
 
 .card-img {
-  overflow: hidden;
+  position: absolute;
+  inset: 0;
 }
 
 .card-img img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
   display: block;
 }
 
 .card-body {
-  padding: 16px 14px 16px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 52px 18px 20px;
+  background: linear-gradient(to top, rgba(6,8,15,0.97) 0%, rgba(6,8,15,0.75) 55%, transparent 100%);
+  transform: translateY(calc(100% - 120px));
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover .card-body {
+  transform: translateY(0);
 }
 
 .card-role {
@@ -398,7 +415,13 @@ h1, h2, h3, h4,
 .card-body p {
   font-size: 15px;
   color: var(--text-muted);
-  line-height: 1.6;
+  line-height: 1.3;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.2s;
+}
+
+.card:hover .card-body p {
+  opacity: 1;
 }
 
 .card-body ul {
@@ -406,7 +429,7 @@ h1, h2, h3, h4,
   padding-left: 16px;
   font-size: 15px;
   color: var(--text-muted);
-  line-height: 1.5;
+  line-height: 1.3;
 }
 
 .card-body li {
@@ -777,7 +800,7 @@ h1, h2, h3, h4,
   }
 
   .card {
-    flex: 0 0 calc(50% - 10px);
+    flex: 0 0 100%;
   }
 
   #approach {
