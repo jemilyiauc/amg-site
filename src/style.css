@@ -77,7 +77,7 @@ p {
 }
 
 .nav-brand {
-  height: 40px;
+  height: 52px;
   width: auto;
   display: block;
 }
@@ -445,8 +445,15 @@ p {
 
 #explore {
   text-align: center;
-  padding: 96px 40px;
-  background: rgba(242, 242, 242, 0.85);
+  padding: 60px;
+  background: radial-gradient(ellipse at center bottom, rgb(255, 255, 255) 0%, rgb(255, 255, 255) 55%, transparent 85%);
+  border-radius: 50% 50% 0 0;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 #explore h2 {
@@ -480,7 +487,7 @@ p {
 }
 
 .footer-brand {
-  height: 40px;
+  height: 52px;
   width: auto;
   display: block;
 }

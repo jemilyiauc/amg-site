@@ -135,7 +135,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Artist Management Group, Inc.</span>
+      <span>© 2026 Artest Management Group, Inc.</span>
     </div>
   </footer>
 `
