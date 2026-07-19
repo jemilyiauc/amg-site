@@ -696,6 +696,30 @@ p {
   color: rgba(138,159,184,0.6);
 }
 
+.form-group-checkbox {
+  gap: 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  accent-color: var(--silver);
+  cursor: pointer;
+}
+
 .modal-submit {
   width: 100%;
   margin-top: 6px;

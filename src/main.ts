@@ -106,6 +106,7 @@ requestForm.addEventListener('submit', (e) => {
     company: (requestForm.querySelector('#f-company') as HTMLInputElement).value,
     email:   (requestForm.querySelector('#f-email')   as HTMLInputElement).value,
     note:    (requestForm.querySelector('#f-note')    as HTMLTextAreaElement).value,
+    optin:   (requestForm.querySelector('#f-optin')   as HTMLInputElement).checked ? 'Yes' : 'No',
   })
 
   fetch(SHEET_URL, { method: 'POST', mode: 'no-cors', body }).catch(() => {})
