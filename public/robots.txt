@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://artestmanagementgroup.com/sitemap.xml
+Sitemap: https://www.artestmanagementgroup.com/sitemap.xml
