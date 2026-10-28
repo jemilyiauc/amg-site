@@ -4,6 +4,9 @@ import { LightBeamBackground } from "@/components/LightBeamBackground";
 import { RequestAccessModal } from "@/components/request-access/RequestAccessModal";
 import { RequestAccessProvider } from "@/components/request-access/RequestAccessProvider";
 import { withRequestAccessDefaults } from "@/lib/requestAccessDefaults";
+import { urlFor } from "@/sanity/lib/image";
+import { SanityLive, sanityFetch } from "@/sanity/lib/live";
+import { REQUEST_ACCESS_FORM_QUERY, SITE_SETTINGS_QUERY } from "@/sanity/lib/queries";
 import "./globals.css";
 
 const zalando = localFont({
@@ -17,32 +20,55 @@ const zalando = localFont({
 });
 
 const SITE_URL = "https://www.artestmanagementgroup.com/";
-const DESCRIPTION =
-  "AMG connects executives, leaders, and investors through an invite-only network of strategic partnerships, capital access, and high-growth opportunities.";
-const SHARE_TITLE = "Get access to exclusive networks and opportunities";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+// Today's copy; each one is used when the matching Site Settings field is empty.
+const SEO_DEFAULTS = {
   title: "AMG | Artest Management Group — Exclusive Executive Network",
-  description: DESCRIPTION,
-  alternates: { canonical: SITE_URL },
-  icons: { icon: "/AMG_logo.png" },
-  openGraph: {
-    type: "website",
-    siteName: "AMG",
-    title: SHARE_TITLE,
-    description: DESCRIPTION,
-    url: SITE_URL,
-    locale: "en_US",
-    images: [{ url: "/AMGSocialBanner.jpg", width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SHARE_TITLE,
-    description: DESCRIPTION,
-    images: ["/AMGSocialBanner.jpg"],
-  },
+  description:
+    "AMG connects executives, leaders, and investors through an invite-only network of strategic partnerships, capital access, and high-growth opportunities.",
+  ogTitle: "Get access to exclusive networks and opportunities",
+  ogImageUrl: "/AMGSocialBanner.jpg",
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await sanityFetch({ query: SITE_SETTINGS_QUERY })
+    .then(({ data }) => data?.seo ?? null)
+    .catch((err) => {
+      console.error("SITE_SETTINGS_QUERY failed", err);
+      return null;
+    });
+
+  const title = seo?.title || SEO_DEFAULTS.title;
+  const description = seo?.description || SEO_DEFAULTS.description;
+  const ogTitle = seo?.ogTitle || SEO_DEFAULTS.ogTitle;
+  const ogDescription = seo?.ogDescription || description;
+  const ogImageUrl = seo?.ogImage?.asset
+    ? urlFor(seo.ogImage).width(1200).height(630).fit("crop").url()
+    : SEO_DEFAULTS.ogImageUrl;
+
+  return {
+    metadataBase: new URL(SITE_URL),
+    title,
+    description,
+    alternates: { canonical: SITE_URL },
+    icons: { icon: "/AMG_logo.png" },
+    openGraph: {
+      type: "website",
+      siteName: "AMG",
+      title: ogTitle,
+      description: ogDescription,
+      url: SITE_URL,
+      locale: "en_US",
+      images: [{ url: ogImageUrl, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogTitle,
+      description: ogDescription,
+      images: [ogImageUrl],
+    },
+  };
+}
 
 const organizationJsonLd = {
   "@context": "https://schema.org",
@@ -60,11 +86,18 @@ const organizationJsonLd = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestAccessForm = await sanityFetch({ query: REQUEST_ACCESS_FORM_QUERY })
+    .then(({ data }) => data ?? null)
+    .catch((err) => {
+      console.error("REQUEST_ACCESS_FORM_QUERY failed", err);
+      return null;
+    });
+
   return (
     <html lang="en" className={zalando.variable}>
       <body>
@@ -76,8 +109,9 @@ export default function RootLayout({
         <div id="glass-layer" />
         <RequestAccessProvider>
           <div id="app">{children}</div>
-          <RequestAccessModal content={withRequestAccessDefaults(null)} />
+          <RequestAccessModal content={withRequestAccessDefaults(requestAccessForm)} />
         </RequestAccessProvider>
+        <SanityLive />
       </body>
     </html>
   );

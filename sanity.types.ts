@@ -297,3 +297,145 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint
   | Slug;
+
+// Source: ../sanity/lib/queries.ts
+// Variable: HOME_PAGE_QUERY
+// Query: *[_type == "homePage" && _id in ["homePage", "drafts.homePage"]][0]{  hero{ headingLines, subheading, ctaLabel },  portfolio{ heading },  curated{ heading },  approach{ label, body },  unlock{ headingLines, items },  explore{ headingLines, body, ctaLabel }}
+export type HOME_PAGE_QUERY_RESULT = {
+  hero: {
+    headingLines: Array<string> | null;
+    subheading: string | null;
+    ctaLabel: string | null;
+  } | null;
+  portfolio: {
+    heading: string | null;
+  } | null;
+  curated: {
+    heading: string | null;
+  } | null;
+  approach: {
+    label: string | null;
+    body: string | null;
+  } | null;
+  unlock: {
+    headingLines: Array<string> | null;
+    items: Array<string> | null;
+  } | null;
+  explore: {
+    headingLines: Array<string> | null;
+    body: string | null;
+    ctaLabel: string | null;
+  } | null;
+} | null;
+
+// Source: ../sanity/lib/queries.ts
+// Variable: SITE_SETTINGS_QUERY
+// Query: *[_type == "siteSettings" && _id in ["siteSettings", "drafts.siteSettings"]][0]{  navCtaLabel,  seo{ title, description, ogTitle, ogDescription, ogImage },  footer{    learnHeading,    learnLinks[]{ _key, label, href },    connectHeading,    socials{ linkedin, x, instagram },    copyright  }}
+export type SITE_SETTINGS_QUERY_RESULT = {
+  navCtaLabel: string | null;
+  seo: {
+    title: string | null;
+    description: string | null;
+    ogTitle: string | null;
+    ogDescription: string | null;
+    ogImage: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+  } | null;
+  footer: {
+    learnHeading: string | null;
+    learnLinks: Array<{
+      _key: string;
+      label: string | null;
+      href: string | null;
+    }> | null;
+    connectHeading: string | null;
+    socials: {
+      linkedin: string | null;
+      x: string | null;
+      instagram: string | null;
+    } | null;
+    copyright: string | null;
+  } | null;
+} | null;
+
+// Source: ../sanity/lib/queries.ts
+// Variable: REQUEST_ACCESS_FORM_QUERY
+// Query: *[_type == "requestAccessForm" && _id in ["requestAccessForm", "drafts.requestAccessForm"]][0]{  title,  intro,  name{ label, placeholder },  company{ label, placeholder },  email{ label, placeholder },  note{ label, placeholder },  optInText,  submitLabel,  sendingLabel,  errorMessage,  successTitle,  successBody}
+export type REQUEST_ACCESS_FORM_QUERY_RESULT = {
+  title: string | null;
+  intro: string | null;
+  name: {
+    label: string | null;
+    placeholder: string | null;
+  } | null;
+  company: {
+    label: string | null;
+    placeholder: string | null;
+  } | null;
+  email: {
+    label: string | null;
+    placeholder: string | null;
+  } | null;
+  note: {
+    label: string | null;
+    placeholder: string | null;
+  } | null;
+  optInText: string | null;
+  submitLabel: string | null;
+  sendingLabel: string | null;
+  errorMessage: string | null;
+  successTitle: string | null;
+  successBody: string | null;
+} | null;
+
+// Source: ../sanity/lib/queries.ts
+// Variable: PARTNERS_QUERY
+// Query: *[_type == "partner"] | order(orderRank){  _id,  name,  logo}
+export type PARTNERS_QUERY_RESULT = Array<{
+  _id: string;
+  name: string | null;
+  logo: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+}>;
+
+// Source: ../sanity/lib/queries.ts
+// Variable: TEAM_QUERY
+// Query: *[_type == "teamMember"] | order(orderRank){  _id,  name,  role,  bio,  photo}
+export type TEAM_QUERY_RESULT = Array<{
+  _id: string;
+  name: string | null;
+  role: string | null;
+  bio: string | null;
+  photo: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+}>;
+
+// Query TypeMap
+declare global {
+  interface SanityQueries {
+    '*[_type == "homePage" && _id in ["homePage", "drafts.homePage"]][0]{\n  hero{ headingLines, subheading, ctaLabel },\n  portfolio{ heading },\n  curated{ heading },\n  approach{ label, body },\n  unlock{ headingLines, items },\n  explore{ headingLines, body, ctaLabel }\n}': HOME_PAGE_QUERY_RESULT;
+    '*[_type == "siteSettings" && _id in ["siteSettings", "drafts.siteSettings"]][0]{\n  navCtaLabel,\n  seo{ title, description, ogTitle, ogDescription, ogImage },\n  footer{\n    learnHeading,\n    learnLinks[]{ _key, label, href },\n    connectHeading,\n    socials{ linkedin, x, instagram },\n    copyright\n  }\n}': SITE_SETTINGS_QUERY_RESULT;
+    '*[_type == "requestAccessForm" && _id in ["requestAccessForm", "drafts.requestAccessForm"]][0]{\n  title,\n  intro,\n  name{ label, placeholder },\n  company{ label, placeholder },\n  email{ label, placeholder },\n  note{ label, placeholder },\n  optInText,\n  submitLabel,\n  sendingLabel,\n  errorMessage,\n  successTitle,\n  successBody\n}': REQUEST_ACCESS_FORM_QUERY_RESULT;
+    '*[_type == "partner"] | order(orderRank){\n  _id,\n  name,\n  logo\n}': PARTNERS_QUERY_RESULT;
+    '*[_type == "teamMember"] | order(orderRank){\n  _id,\n  name,\n  role,\n  bio,\n  photo\n}': TEAM_QUERY_RESULT;
+  }
+}
+// Lets @sanity/client releases that predate the global registry read it too
+declare module "@sanity/client" {
+  interface SanityQueries extends globalThis.SanityQueries {}
+}

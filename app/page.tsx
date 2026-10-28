@@ -2,107 +2,71 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { PageEffects } from "@/components/PageEffects";
 import { ApproachSection } from "@/components/sections/ApproachSection";
-import { CuratedSection } from "@/components/sections/CuratedSection";
+import { CuratedSection, type TeamCard } from "@/components/sections/CuratedSection";
 import { ExploreSection } from "@/components/sections/ExploreSection";
 import { HeroSection } from "@/components/sections/HeroSection";
-import { PortfolioSection } from "@/components/sections/PortfolioSection";
+import { PortfolioSection, type PartnerCard } from "@/components/sections/PortfolioSection";
 import { UnlockSection } from "@/components/sections/UnlockSection";
+import { urlFor } from "@/sanity/lib/image";
+import { sanityFetch } from "@/sanity/lib/live";
+import { HOME_PAGE_QUERY, PARTNERS_QUERY, SITE_SETTINGS_QUERY, TEAM_QUERY } from "@/sanity/lib/queries";
+import type { PARTNERS_QUERY_RESULT, TEAM_QUERY_RESULT } from "@/sanity.types";
 
-// Temporary: today's copy, hardcoded until the page reads from Sanity.
-const PARTNERS = [
-  ["BuildOps", "BuildOpsLogo"],
-  ["LA Times", "LATimesLogo"],
-  ["Boost", "BoostLogo"],
-  ["Human Interest", "HumanInterestLogo"],
-  ["Icarus", "IcarusLogo"],
-  ["AEF", "AEFLogo"],
-  ["PlayOn", "PlayOnLogo"],
-  ["Alibaba", "AlibabaLogo"],
-  ["T-Mobile", "TMobileLogo"],
-  ["ADD", "ADDLogo"],
-  ["Akko", "AkkoLogo"],
-  ["Lakers", "LakersLogo"],
-].map(([name, file]) => ({ _id: file, name, logoUrl: `/portfoliopartners/${file}.png` }));
+const toPartnerCard = (partner: PARTNERS_QUERY_RESULT[number]): PartnerCard => ({
+  _id: partner._id,
+  name: partner.name,
+  logoUrl: partner.logo?.asset ? urlFor(partner.logo).height(240).url() : null,
+});
 
-const content = {
-  navCtaLabel: "Request Access",
-  hero: {
-    headingLines: ["Get access to", "exclusive networks", "and opportunities"],
-    subheading:
-      "A strategic platform for executives, leaders, and investors creating transformative partnerships across industries.",
-    ctaLabel: "Request Access",
-  },
-  portfolioHeading: "Portfolio & partners",
-  curatedHeading: "Curated by",
-  team: [
-    {
-      _id: "metta",
-      name: "Metta World Peace",
-      role: "Chairman / CEO & Founder",
-      bio: "NBA Champion and seasoned executive leveraging 10+ years of business development and VC leadership to drive global impact.",
-      photoUrl: "/team/Metta.webp",
-    },
-    {
-      _id: "stephen-stokols",
-      name: "Stephen Stokols",
-      role: "Board Member / Co-Chair",
-      bio: "Former CEO of Boost Mobile with a track record of scaling multi-billion dollar enterprises and orchestrating the $400M exit of FreedomPop.",
-      photoUrl: "/team/StephenS.webp",
-    },
-    {
-      _id: "nektar-baziotis",
-      name: "Nektar Baziotis",
-      role: "Chief Technology Officer",
-      bio: "Architect behind ICARUS AI and serial entrepreneur with 20+ years of experience architecting scalable global IT solutions and pioneering gen-AI integrations.",
-      photoUrl: "/team/NektarB.webp",
-    },
-  ],
-  approach: {
-    label: "Our approach",
-    body: "AMG operates as a strategic management and growth platform, creating pathways to success through meaningful networks of executives, leaders, and investors.",
-  },
-  unlock: {
-    headingLines: ["Unlock", "opportunities", "through"],
-    items: [
-      "invite-only events",
-      "private Slack",
-      "global collaborators",
-      "strategic partnerships",
-      "high-growth portfolios",
-      "capital access",
-    ],
-  },
-  explore: {
-    headingLines: ["Explore", "alignment"],
-    body: "If you are seeking partnership, investment alignment, or strategic collaboration, we invite you to apply for access.",
-    ctaLabel: "Request Access",
-  },
-  footer: {
-    learnHeading: "Learn",
-    learnLinks: [
-      { label: "Home", href: "/" },
-      { label: "About", href: "#" },
-      { label: "Request Access", href: "#request-access" },
-    ],
-    connectHeading: "Connect",
-    socials: { linkedin: "#", x: "#", instagram: "#" },
-    copyright: "© 2026 Artest Management Group, Inc.",
-  },
-};
+// 660×885 matches the card's fixed aspect ratio; the crop respects the editor's hotspot.
+const toTeamCard = (member: TEAM_QUERY_RESULT[number]): TeamCard => ({
+  _id: member._id,
+  name: member.name,
+  role: member.role,
+  bio: member.bio,
+  photoUrl: member.photo?.asset ? urlFor(member.photo).width(660).height(885).fit("crop").url() : null,
+});
 
-export default function Home() {
+export default async function Home() {
+  const [homePage, siteSettings, partners, team] = await Promise.all([
+    sanityFetch({ query: HOME_PAGE_QUERY })
+      .then(({ data }) => data ?? null)
+      .catch((err) => {
+        console.error("HOME_PAGE_QUERY failed", err);
+        return null;
+      }),
+    sanityFetch({ query: SITE_SETTINGS_QUERY })
+      .then(({ data }) => data ?? null)
+      .catch((err) => {
+        console.error("SITE_SETTINGS_QUERY failed", err);
+        return null;
+      }),
+    sanityFetch({ query: PARTNERS_QUERY })
+      .then(({ data }) => (data ?? []).map(toPartnerCard))
+      .catch((err) => {
+        console.error("PARTNERS_QUERY failed", err);
+        return [] as PartnerCard[];
+      }),
+    sanityFetch({ query: TEAM_QUERY })
+      .then(({ data }) => (data ?? []).map(toTeamCard))
+      .catch((err) => {
+        console.error("TEAM_QUERY failed", err);
+        return [] as TeamCard[];
+      }),
+  ]);
+
   return (
     <>
-      <Navbar ctaLabel={content.navCtaLabel} />
+      <Navbar ctaLabel={siteSettings?.navCtaLabel} />
       <main>
-        <HeroSection hero={content.hero} />
-        <PortfolioSection heading={content.portfolioHeading} partners={PARTNERS} />
-        <CuratedSection heading={content.curatedHeading} team={content.team} />
-        <ApproachSection approach={content.approach} />
-        <UnlockSection unlock={content.unlock} />
+        <HeroSection hero={homePage?.hero ?? null} />
+        <PortfolioSection heading={homePage?.portfolio?.heading} partners={partners} />
+        <CuratedSection heading={homePage?.curated?.heading} team={team} />
+        <ApproachSection approach={homePage?.approach ?? null} />
+        <UnlockSection unlock={homePage?.unlock ?? null} />
         <div className="glass-bottom">
-          <ExploreSection explore={content.explore} />
-          <Footer footer={content.footer} />
+          <ExploreSection explore={homePage?.explore ?? null} />
+          <Footer footer={siteSettings?.footer ?? null} />
         </div>
       </main>
       <PageEffects />
