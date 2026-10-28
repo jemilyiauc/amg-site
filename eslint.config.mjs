@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The Studio has its own eslint config and build output.
+    "studio/**",
   ]),
 ]);
 
