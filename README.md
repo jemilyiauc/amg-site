@@ -3,7 +3,7 @@
 The Artest Management Group site at https://www.artestmanagementgroup.com. It's a Next.js 16 app, and all of its copy and images come from Sanity. The setup mirrors the AEF site (`au-site`).
 
 - **Site:** Next.js app in the repo root. Deploys on Netlify from `main` (see `netlify.toml`).
-- **Studio:** Sanity Studio in `studio/`, project `t6w8cnoy`, dataset `production`. Kate and Emily edit content here.
+- **Studio:** Sanity Studio in `studio/`, project `t6w8cnoy`, dataset `production`. Kate and Emily edit content at https://artestmanagementgroup.sanity.studio.
 - **Request Access form:** posts to `/api/contact`, which forwards to a Google Apps Script that appends a row to the Google Sheet.
 
 > Next.js 16 has breaking changes. Read `node_modules/next/dist/docs/` before writing Next code (see `AGENTS.md`).
