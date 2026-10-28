@@ -31,12 +31,8 @@ const SEO_DEFAULTS = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await sanityFetch({ query: SITE_SETTINGS_QUERY })
-    .then(({ data }) => data?.seo ?? null)
-    .catch((err) => {
-      console.error("SITE_SETTINGS_QUERY failed", err);
-      return null;
-    });
+  const { data } = await sanityFetch({ query: SITE_SETTINGS_QUERY });
+  const seo = data?.seo ?? null;
 
   const title = seo?.title || SEO_DEFAULTS.title;
   const description = seo?.description || SEO_DEFAULTS.description;
@@ -91,12 +87,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const requestAccessForm = await sanityFetch({ query: REQUEST_ACCESS_FORM_QUERY })
-    .then(({ data }) => data ?? null)
-    .catch((err) => {
-      console.error("REQUEST_ACCESS_FORM_QUERY failed", err);
-      return null;
-    });
+  // A failed fetch throws (see sanity/lib/requireDocument.ts); missing fields fall back to today's copy.
+  const { data: requestAccessForm } = await sanityFetch({ query: REQUEST_ACCESS_FORM_QUERY });
 
   return (
     <html lang="en" className={zalando.variable}>

@@ -9,6 +9,7 @@ import { PortfolioSection, type PartnerCard } from "@/components/sections/Portfo
 import { UnlockSection } from "@/components/sections/UnlockSection";
 import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
+import { requireDocument } from "@/sanity/lib/requireDocument";
 import { HOME_PAGE_QUERY, PARTNERS_QUERY, SITE_SETTINGS_QUERY, TEAM_QUERY } from "@/sanity/lib/queries";
 import type { PARTNERS_QUERY_RESULT, TEAM_QUERY_RESULT } from "@/sanity.types";
 
@@ -28,45 +29,26 @@ const toTeamCard = (member: TEAM_QUERY_RESULT[number]): TeamCard => ({
 });
 
 export default async function Home() {
+  // No catch: a failed query must fail the build or regeneration (see requireDocument).
   const [homePage, siteSettings, partners, team] = await Promise.all([
-    sanityFetch({ query: HOME_PAGE_QUERY })
-      .then(({ data }) => data ?? null)
-      .catch((err) => {
-        console.error("HOME_PAGE_QUERY failed", err);
-        return null;
-      }),
-    sanityFetch({ query: SITE_SETTINGS_QUERY })
-      .then(({ data }) => data ?? null)
-      .catch((err) => {
-        console.error("SITE_SETTINGS_QUERY failed", err);
-        return null;
-      }),
-    sanityFetch({ query: PARTNERS_QUERY })
-      .then(({ data }) => (data ?? []).map(toPartnerCard))
-      .catch((err) => {
-        console.error("PARTNERS_QUERY failed", err);
-        return [] as PartnerCard[];
-      }),
-    sanityFetch({ query: TEAM_QUERY })
-      .then(({ data }) => (data ?? []).map(toTeamCard))
-      .catch((err) => {
-        console.error("TEAM_QUERY failed", err);
-        return [] as TeamCard[];
-      }),
+    sanityFetch({ query: HOME_PAGE_QUERY }).then(({ data }) => requireDocument("homePage", data)),
+    sanityFetch({ query: SITE_SETTINGS_QUERY }).then(({ data }) => requireDocument("siteSettings", data)),
+    sanityFetch({ query: PARTNERS_QUERY }).then(({ data }) => data.map(toPartnerCard)),
+    sanityFetch({ query: TEAM_QUERY }).then(({ data }) => data.map(toTeamCard)),
   ]);
 
   return (
     <>
-      <Navbar ctaLabel={siteSettings?.navCtaLabel} />
+      <Navbar ctaLabel={siteSettings.navCtaLabel} />
       <main>
-        <HeroSection hero={homePage?.hero ?? null} />
-        <PortfolioSection heading={homePage?.portfolio?.heading} partners={partners} />
-        <CuratedSection heading={homePage?.curated?.heading} team={team} />
-        <ApproachSection approach={homePage?.approach ?? null} />
-        <UnlockSection unlock={homePage?.unlock ?? null} />
+        <HeroSection hero={homePage.hero} />
+        <PortfolioSection heading={homePage.portfolio?.heading} partners={partners} />
+        <CuratedSection heading={homePage.curated?.heading} team={team} />
+        <ApproachSection approach={homePage.approach} />
+        <UnlockSection unlock={homePage.unlock} />
         <div className="glass-bottom">
-          <ExploreSection explore={homePage?.explore ?? null} />
-          <Footer footer={siteSettings?.footer ?? null} />
+          <ExploreSection explore={homePage.explore} />
+          <Footer footer={siteSettings.footer} />
         </div>
       </main>
       <PageEffects />
