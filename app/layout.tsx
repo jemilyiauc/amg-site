@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { LightBeamBackground } from "@/components/LightBeamBackground";
+import { RequestAccessModal } from "@/components/request-access/RequestAccessModal";
+import { RequestAccessProvider } from "@/components/request-access/RequestAccessProvider";
+import { REQUEST_ACCESS_DEFAULTS } from "@/lib/requestAccessDefaults";
 import "./globals.css";
 
 const zalando = localFont({
@@ -68,12 +72,12 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
-        <div
-          id="vanta-bg"
-          style={{ position: "fixed", top: 0, left: 0, width: "100vw", height: "100vh", zIndex: 0, pointerEvents: "none" }}
-        />
+        <LightBeamBackground />
         <div id="glass-layer" />
-        <div id="app">{children}</div>
+        <RequestAccessProvider>
+          <div id="app">{children}</div>
+          <RequestAccessModal content={REQUEST_ACCESS_DEFAULTS} />
+        </RequestAccessProvider>
       </body>
     </html>
   );
