@@ -2,3 +2,8 @@
 [build]
   command = "npm run build"
   publish = ".next"
+
+# This site was created for Vite, so Netlify doesn't enable its Next.js runtime on its own.
+# Without it, .next is uploaded as plain static files and every route 404s.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
