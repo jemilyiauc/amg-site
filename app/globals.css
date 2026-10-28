@@ -1,18 +1,6 @@
-@font-face {
-  font-family: 'Zalando Sans';
-  src: url('/fonts/ZalandoSans-VariableFont_wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Zalando Sans';
-  src: url('/fonts/ZalandoSans-Italic-VariableFont_wdth,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: italic;
-  font-display: swap;
-}
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
 
 :root {
   --black: #0a0a0a;
@@ -27,7 +15,7 @@
   --silver: #d4d4d4;
   --silver-dark: #606060;
   --max-w: 1100px;
-  --sans: 'Zalando Sans', system-ui, -apple-system, sans-serif;
+  --sans: var(--font-zalando), system-ui, -apple-system, sans-serif;
 
   font-family: var(--sans);
   font-weight: 300;
@@ -270,7 +258,8 @@ p {
 
 .marquee-track {
   display: flex;
-  animation: marquee 60s linear infinite;
+  width: max-content;
+  animation: marquee var(--marquee-duration, 60s) linear infinite;
   will-change: transform;
 }
 
@@ -295,10 +284,10 @@ p {
   object-fit: contain;
 }
 
-/* 12 boxes × (200px + 20px margin) = 2640px — exactly half the track */
+/* The track holds the logo list twice, so -50% is one full loop for any count */
 @keyframes marquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-2640px); }
+  to   { transform: translateX(-50%); }
 }
 
 /* ─── Curated by ─── */
@@ -340,6 +329,8 @@ p {
 .card-img img {
   width: 100%;
   height: auto;
+  aspect-ratio: 660 / 885;
+  object-fit: cover;
   display: block;
 }
 
