@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import { LightBeamBackground } from "@/components/LightBeamBackground";
 import { RequestAccessModal } from "@/components/request-access/RequestAccessModal";
 import { RequestAccessProvider } from "@/components/request-access/RequestAccessProvider";
-import { REQUEST_ACCESS_DEFAULTS } from "@/lib/requestAccessDefaults";
+import { withRequestAccessDefaults } from "@/lib/requestAccessDefaults";
 import "./globals.css";
 
 const zalando = localFont({
@@ -76,7 +76,7 @@ export default function RootLayout({
         <div id="glass-layer" />
         <RequestAccessProvider>
           <div id="app">{children}</div>
-          <RequestAccessModal content={REQUEST_ACCESS_DEFAULTS} />
+          <RequestAccessModal content={withRequestAccessDefaults(null)} />
         </RequestAccessProvider>
       </body>
     </html>

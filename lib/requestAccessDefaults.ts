@@ -31,3 +31,35 @@ export const REQUEST_ACCESS_DEFAULTS: RequestAccessContent = {
   successTitle: "Request received",
   successBody: "We'll review your information and be in touch shortly.",
 };
+
+// Shape of the CMS document: any field may be missing or null.
+export type DeepPartialNullable<T> = {
+  [K in keyof T]?: T[K] extends string ? string | null : DeepPartialNullable<T[K]> | null;
+};
+
+const pick = (cms: string | null | undefined, fallback: string) => (cms?.trim() ? cms : fallback);
+
+const pickField = (cms: DeepPartialNullable<FieldCopy> | null | undefined, fallback: FieldCopy): FieldCopy => ({
+  label: pick(cms?.label, fallback.label),
+  placeholder: pick(cms?.placeholder, fallback.placeholder),
+});
+
+export function withRequestAccessDefaults(
+  cms: DeepPartialNullable<RequestAccessContent> | null | undefined,
+): RequestAccessContent {
+  const d = REQUEST_ACCESS_DEFAULTS;
+  return {
+    title: pick(cms?.title, d.title),
+    intro: pick(cms?.intro, d.intro),
+    name: pickField(cms?.name, d.name),
+    company: pickField(cms?.company, d.company),
+    email: pickField(cms?.email, d.email),
+    note: pickField(cms?.note, d.note),
+    optInText: pick(cms?.optInText, d.optInText),
+    submitLabel: pick(cms?.submitLabel, d.submitLabel),
+    sendingLabel: pick(cms?.sendingLabel, d.sendingLabel),
+    errorMessage: pick(cms?.errorMessage, d.errorMessage),
+    successTitle: pick(cms?.successTitle, d.successTitle),
+    successBody: pick(cms?.successBody, d.successBody),
+  };
+}

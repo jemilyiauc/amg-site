@@ -718,6 +718,12 @@ p {
   font-size: 15px;
 }
 
+.modal-error {
+  font-size: 14px;
+  color: #ff8a8a;
+  margin-bottom: 12px;
+}
+
 .modal-success:not([hidden]) {
   flex: 1;
   display: flex;

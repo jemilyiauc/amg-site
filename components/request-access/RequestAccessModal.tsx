@@ -35,9 +35,26 @@ export const RequestAccessModal = ({ content }: { content: RequestAccessContent 
     };
   }, [isOpen, close]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setStatus("success");
+    const form = new FormData(e.currentTarget);
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.get("name"),
+          company: form.get("company"),
+          email: form.get("email"),
+          note: form.get("note"),
+          optin: form.get("optin") === "on",
+        }),
+      });
+      setStatus(res.ok ? "success" : "error");
+    } catch {
+      setStatus("error");
+    }
   };
 
   const isSuccess = status === "success";
@@ -88,6 +105,11 @@ export const RequestAccessModal = ({ content }: { content: RequestAccessContent 
               <span>{content.optInText}</span>
             </label>
           </div>
+          {status === "error" && (
+            <p className="modal-error" role="alert">
+              {content.errorMessage}
+            </p>
+          )}
           <button type="submit" className="btn btn-primary modal-submit" disabled={status === "sending"}>
             {status === "sending" ? content.sendingLabel : content.submitLabel}
           </button>
