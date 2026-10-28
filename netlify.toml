@@ -1,0 +1,4 @@
+# Pins the Next.js build so it doesn't depend on the dashboard's old Vite settings (publish = "dist").
+[build]
+  command = "npm run build"
+  publish = ".next"
