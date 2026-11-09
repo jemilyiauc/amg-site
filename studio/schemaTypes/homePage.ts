@@ -1,5 +1,6 @@
 import { defineType, defineField } from "sanity";
 import { HomeIcon } from "@sanity/icons/Home";
+import { ctaLinkField } from "./shared/link";
 
 const headingLines = (title = "Heading") =>
   defineField({
@@ -27,6 +28,7 @@ export const homePage = defineType({
         headingLines(),
         required("subheading", "text"),
         required("ctaLabel", "string", { title: "Button label" }),
+        ctaLinkField("ctaHref", "Button link"),
       ],
     }),
     defineField({
@@ -71,6 +73,7 @@ export const homePage = defineType({
         headingLines(),
         required("body", "text"),
         required("ctaLabel", "string", { title: "Button label" }),
+        ctaLinkField("ctaHref", "Button link"),
       ],
     }),
   ],

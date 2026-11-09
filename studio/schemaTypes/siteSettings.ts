@@ -1,6 +1,6 @@
 import { defineType, defineField, defineArrayMember } from "sanity";
 import { CogIcon } from "@sanity/icons/Cog";
-import { linkFields } from "./shared/link";
+import { ctaLinkField, linkFields } from "./shared/link";
 
 const socialUrl = (name: string, title: string) =>
   defineField({ name, title, type: "url", description: "Leave empty to hide the icon." });
@@ -17,6 +17,7 @@ export const siteSettings = defineType({
       type: "string",
       validation: (rule) => rule.required(),
     }),
+    ctaLinkField("navCtaHref", "Navbar button link"),
     defineField({
       name: "seo",
       title: "SEO & sharing",
