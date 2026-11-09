@@ -1,10 +1,11 @@
 import { Lines } from "@/components/ui/Lines";
-import { RequestAccessButton } from "@/components/request-access/RequestAccessButton";
+import { CtaLink } from "@/components/CtaLink";
 
 export type HeroContent = {
   headingLines?: string[] | null;
   subheading?: string | null;
   ctaLabel?: string | null;
+  ctaHref?: string | null;
 } | null;
 
 export const HeroSection = ({ hero }: { hero: HeroContent }) => (
@@ -13,6 +14,6 @@ export const HeroSection = ({ hero }: { hero: HeroContent }) => (
       <Lines lines={hero?.headingLines} />
     </h1>
     <p className="hero-sub">{hero?.subheading}</p>
-    {hero?.ctaLabel && <RequestAccessButton label={hero.ctaLabel} className="btn btn-primary" />}
+    {hero?.ctaLabel && <CtaLink label={hero.ctaLabel} href={hero.ctaHref} className="btn btn-primary" />}
   </section>
 );

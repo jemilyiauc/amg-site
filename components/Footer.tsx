@@ -1,4 +1,4 @@
-import { RequestAccessButton } from "@/components/request-access/RequestAccessButton";
+import { CtaLink } from "@/components/CtaLink";
 import { visibleSocials, type SocialKey } from "@/lib/socials";
 
 export type FooterLink = { label: string | null; href: string | null };
@@ -10,9 +10,6 @@ export type FooterContent = {
   socials?: { linkedin?: string | null; x?: string | null; instagram?: string | null } | null;
   copyright?: string | null;
 } | null;
-
-// Footer link value that opens the Request Access modal instead of navigating.
-const REQUEST_ACCESS_HREF = "#request-access";
 
 const SOCIAL_ICONS = {
   linkedin: { label: "LinkedIn", path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" },
@@ -31,15 +28,9 @@ export const Footer = ({ footer }: { footer: FooterContent }) => {
         <div className="footer-cols">
           <div className="footer-col">
             <h4>{footer?.learnHeading}</h4>
-            {(footer?.learnLinks ?? []).map((link, index) =>
-              link.href === REQUEST_ACCESS_HREF ? (
-                <RequestAccessButton key={index} label={link.label ?? ""} className="" />
-              ) : (
-                <a key={index} href={link.href ?? "#"}>
-                  {link.label}
-                </a>
-              ),
-            )}
+            {(footer?.learnLinks ?? []).map((link, index) => (
+              <CtaLink key={index} label={link.label ?? ""} href={link.href ?? "#"} />
+            ))}
           </div>
           {socials.length > 0 && (
             <div className="footer-col">

@@ -1,9 +1,9 @@
-import { RequestAccessButton } from "@/components/request-access/RequestAccessButton";
+import { CtaLink } from "@/components/CtaLink";
 
-export const Navbar = ({ ctaLabel }: { ctaLabel?: string | null }) => (
+export const Navbar = ({ ctaLabel, ctaHref }: { ctaLabel?: string | null; ctaHref?: string | null }) => (
   <nav id="navbar">
     {/* eslint-disable-next-line @next/next/no-img-element */}
     <img src="/AMG_logo.png" className="nav-brand" alt="AMG" />
-    {ctaLabel && <RequestAccessButton label={ctaLabel} className="btn btn-outline" />}
+    {ctaLabel && <CtaLink label={ctaLabel} href={ctaHref} className="btn btn-outline" />}
   </nav>
 );

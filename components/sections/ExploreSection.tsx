@@ -1,10 +1,11 @@
 import { Lines } from "@/components/ui/Lines";
-import { RequestAccessButton } from "@/components/request-access/RequestAccessButton";
+import { CtaLink } from "@/components/CtaLink";
 
 export type ExploreContent = {
   headingLines?: string[] | null;
   body?: string | null;
   ctaLabel?: string | null;
+  ctaHref?: string | null;
 } | null;
 
 export const ExploreSection = ({ explore }: { explore: ExploreContent }) => (
@@ -13,6 +14,6 @@ export const ExploreSection = ({ explore }: { explore: ExploreContent }) => (
       <Lines lines={explore?.headingLines} />
     </h2>
     <p>{explore?.body}</p>
-    {explore?.ctaLabel && <RequestAccessButton label={explore.ctaLabel} className="btn btn-primary" />}
+    {explore?.ctaLabel && <CtaLink label={explore.ctaLabel} href={explore.ctaHref} className="btn btn-primary" />}
   </section>
 );

@@ -80,6 +80,7 @@ export type RequestAccessForm = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
+  enabled?: boolean;
   title?: string;
   intro?: string;
   name?: {
@@ -113,6 +114,7 @@ export type SiteSettings = {
   _updatedAt: string;
   _rev: string;
   navCtaLabel?: string;
+  navCtaHref?: string;
   seo?: {
     title?: string;
     description?: string;
@@ -154,6 +156,7 @@ export type HomePage = {
     headingLines?: Array<string>;
     subheading?: string;
     ctaLabel?: string;
+    ctaHref?: string;
   };
   portfolio?: {
     heading?: string;
@@ -173,6 +176,7 @@ export type HomePage = {
     headingLines?: Array<string>;
     body?: string;
     ctaLabel?: string;
+    ctaHref?: string;
   };
 };
 
@@ -300,12 +304,13 @@ export type AllSanitySchemaTypes =
 
 // Source: ../sanity/lib/queries.ts
 // Variable: HOME_PAGE_QUERY
-// Query: *[_type == "homePage" && _id in ["homePage", "drafts.homePage"]][0]{  hero{ headingLines, subheading, ctaLabel },  portfolio{ heading },  curated{ heading },  approach{ label, body },  unlock{ headingLines, items },  explore{ headingLines, body, ctaLabel }}
+// Query: *[_type == "homePage" && _id in ["homePage", "drafts.homePage"]][0]{  hero{ headingLines, subheading, ctaLabel, ctaHref },  portfolio{ heading },  curated{ heading },  approach{ label, body },  unlock{ headingLines, items },  explore{ headingLines, body, ctaLabel, ctaHref }}
 export type HOME_PAGE_QUERY_RESULT = {
   hero: {
     headingLines: Array<string> | null;
     subheading: string | null;
     ctaLabel: string | null;
+    ctaHref: string | null;
   } | null;
   portfolio: {
     heading: string | null;
@@ -325,14 +330,16 @@ export type HOME_PAGE_QUERY_RESULT = {
     headingLines: Array<string> | null;
     body: string | null;
     ctaLabel: string | null;
+    ctaHref: string | null;
   } | null;
 } | null;
 
 // Source: ../sanity/lib/queries.ts
 // Variable: SITE_SETTINGS_QUERY
-// Query: *[_type == "siteSettings" && _id in ["siteSettings", "drafts.siteSettings"]][0]{  navCtaLabel,  seo{ title, description, ogTitle, ogDescription, ogImage },  footer{    learnHeading,    learnLinks[]{ _key, label, href },    connectHeading,    socials{ linkedin, x, instagram },    copyright  }}
+// Query: *[_type == "siteSettings" && _id in ["siteSettings", "drafts.siteSettings"]][0]{  navCtaLabel,  navCtaHref,  seo{ title, description, ogTitle, ogDescription, ogImage },  footer{    learnHeading,    learnLinks[]{ _key, label, href },    connectHeading,    socials{ linkedin, x, instagram },    copyright  }}
 export type SITE_SETTINGS_QUERY_RESULT = {
   navCtaLabel: string | null;
+  navCtaHref: string | null;
   seo: {
     title: string | null;
     description: string | null;
@@ -365,8 +372,9 @@ export type SITE_SETTINGS_QUERY_RESULT = {
 
 // Source: ../sanity/lib/queries.ts
 // Variable: REQUEST_ACCESS_FORM_QUERY
-// Query: *[_type == "requestAccessForm" && _id in ["requestAccessForm", "drafts.requestAccessForm"]][0]{  title,  intro,  name{ label, placeholder },  company{ label, placeholder },  email{ label, placeholder },  note{ label, placeholder },  optInText,  submitLabel,  sendingLabel,  errorMessage,  successTitle,  successBody}
+// Query: *[_type == "requestAccessForm" && _id in ["requestAccessForm", "drafts.requestAccessForm"]][0]{  enabled,  title,  intro,  name{ label, placeholder },  company{ label, placeholder },  email{ label, placeholder },  note{ label, placeholder },  optInText,  submitLabel,  sendingLabel,  errorMessage,  successTitle,  successBody}
 export type REQUEST_ACCESS_FORM_QUERY_RESULT = {
+  enabled: boolean | null;
   title: string | null;
   intro: string | null;
   name: {
@@ -428,9 +436,9 @@ export type TEAM_QUERY_RESULT = Array<{
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_type == "homePage" && _id in ["homePage", "drafts.homePage"]][0]{\n  hero{ headingLines, subheading, ctaLabel },\n  portfolio{ heading },\n  curated{ heading },\n  approach{ label, body },\n  unlock{ headingLines, items },\n  explore{ headingLines, body, ctaLabel }\n}': HOME_PAGE_QUERY_RESULT;
-    '*[_type == "siteSettings" && _id in ["siteSettings", "drafts.siteSettings"]][0]{\n  navCtaLabel,\n  seo{ title, description, ogTitle, ogDescription, ogImage },\n  footer{\n    learnHeading,\n    learnLinks[]{ _key, label, href },\n    connectHeading,\n    socials{ linkedin, x, instagram },\n    copyright\n  }\n}': SITE_SETTINGS_QUERY_RESULT;
-    '*[_type == "requestAccessForm" && _id in ["requestAccessForm", "drafts.requestAccessForm"]][0]{\n  title,\n  intro,\n  name{ label, placeholder },\n  company{ label, placeholder },\n  email{ label, placeholder },\n  note{ label, placeholder },\n  optInText,\n  submitLabel,\n  sendingLabel,\n  errorMessage,\n  successTitle,\n  successBody\n}': REQUEST_ACCESS_FORM_QUERY_RESULT;
+    '*[_type == "homePage" && _id in ["homePage", "drafts.homePage"]][0]{\n  hero{ headingLines, subheading, ctaLabel, ctaHref },\n  portfolio{ heading },\n  curated{ heading },\n  approach{ label, body },\n  unlock{ headingLines, items },\n  explore{ headingLines, body, ctaLabel, ctaHref }\n}': HOME_PAGE_QUERY_RESULT;
+    '*[_type == "siteSettings" && _id in ["siteSettings", "drafts.siteSettings"]][0]{\n  navCtaLabel,\n  navCtaHref,\n  seo{ title, description, ogTitle, ogDescription, ogImage },\n  footer{\n    learnHeading,\n    learnLinks[]{ _key, label, href },\n    connectHeading,\n    socials{ linkedin, x, instagram },\n    copyright\n  }\n}': SITE_SETTINGS_QUERY_RESULT;
+    '*[_type == "requestAccessForm" && _id in ["requestAccessForm", "drafts.requestAccessForm"]][0]{\n  enabled,\n  title,\n  intro,\n  name{ label, placeholder },\n  company{ label, placeholder },\n  email{ label, placeholder },\n  note{ label, placeholder },\n  optInText,\n  submitLabel,\n  sendingLabel,\n  errorMessage,\n  successTitle,\n  successBody\n}': REQUEST_ACCESS_FORM_QUERY_RESULT;
     '*[_type == "partner"] | order(orderRank){\n  _id,\n  name,\n  logo\n}': PARTNERS_QUERY_RESULT;
     '*[_type == "teamMember"] | order(orderRank){\n  _id,\n  name,\n  role,\n  bio,\n  photo\n}': TEAM_QUERY_RESULT;
   }
