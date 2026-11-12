@@ -39,7 +39,7 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar ctaLabel={siteSettings.navCtaLabel} />
+      <Navbar ctaLabel={siteSettings.navCtaLabel} ctaHref={siteSettings.navCtaHref} />
       <main>
         <HeroSection hero={homePage.hero} />
         <PortfolioSection heading={homePage.portfolio?.heading} partners={partners} />

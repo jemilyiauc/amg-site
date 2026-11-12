@@ -89,6 +89,8 @@ export default async function RootLayout({
 }>) {
   // A failed fetch throws (see sanity/lib/requireDocument.ts); missing fields fall back to today's copy.
   const { data: requestAccessForm } = await sanityFetch({ query: REQUEST_ACCESS_FORM_QUERY });
+  // On until an editor turns it off.
+  const formEnabled = requestAccessForm?.enabled !== false;
 
   return (
     <html lang="en" className={zalando.variable}>
@@ -99,9 +101,9 @@ export default async function RootLayout({
         />
         <LightBeamBackground />
         <div id="glass-layer" />
-        <RequestAccessProvider>
+        <RequestAccessProvider enabled={formEnabled}>
           <div id="app">{children}</div>
-          <RequestAccessModal content={withRequestAccessDefaults(requestAccessForm)} />
+          {formEnabled && <RequestAccessModal content={withRequestAccessDefaults(requestAccessForm)} />}
         </RequestAccessProvider>
         <SanityLive />
       </body>

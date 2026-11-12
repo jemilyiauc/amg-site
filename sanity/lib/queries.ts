@@ -6,16 +6,17 @@ import { defineQuery } from "next-sanity";
 // resolving under the "drafts" perspective if Visual Editing is added later.
 
 export const HOME_PAGE_QUERY = defineQuery(`*[_type == "homePage" && _id in ["homePage", "drafts.homePage"]][0]{
-  hero{ headingLines, subheading, ctaLabel },
+  hero{ headingLines, subheading, ctaLabel, ctaHref },
   portfolio{ heading },
   curated{ heading },
   approach{ label, body },
   unlock{ headingLines, items },
-  explore{ headingLines, body, ctaLabel }
+  explore{ headingLines, body, ctaLabel, ctaHref }
 }`);
 
 export const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings" && _id in ["siteSettings", "drafts.siteSettings"]][0]{
   navCtaLabel,
+  navCtaHref,
   seo{ title, description, ogTitle, ogDescription, ogImage },
   footer{
     learnHeading,
@@ -27,6 +28,7 @@ export const SITE_SETTINGS_QUERY = defineQuery(`*[_type == "siteSettings" && _id
 }`);
 
 export const REQUEST_ACCESS_FORM_QUERY = defineQuery(`*[_type == "requestAccessForm" && _id in ["requestAccessForm", "drafts.requestAccessForm"]][0]{
+  enabled,
   title,
   intro,
   name{ label, placeholder },

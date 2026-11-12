@@ -33,11 +33,13 @@ Everything on the page is edited inside fixed sections. Editors can't add, remov
 
 | Studio item | Controls |
 |---|---|
-| Home Page | Hero, section headings, Our approach, Unlock list, Explore alignment |
-| Request Access Form | All form wording. The fields themselves are fixed, because the Sheet's columns depend on them |
-| Site Settings | Navbar button, SEO and share image, footer (links, social URLs, copyright) |
+| Home Page | Hero, section headings, Our approach, Unlock list, Explore alignment, and the hero and Explore buttons' label and link |
+| Request Access Form | On/off switch for the pop-up, and all form wording. The fields themselves are fixed, because the Sheet's columns depend on them |
+| Site Settings | Navbar button (label and link), SEO and share image, footer (links, social URLs, copyright) |
 | Team Members | "Curated by" cards. Drag to reorder |
 | Partners | Marquee logos. Drag to reorder |
+
+Links are picked from a dropdown of the page's sections, or "Link outside the site…" to paste a URL. A button with no link opens the Request Access form, and is hidden while the form is turned off.
 
 Only `emily@testjarlabs.com` and `kateh@artestmanagementgroup.com` see Publish (`studio/sanity.config.ts`). If a field is empty or Sanity is unreachable, the page still renders. The form and SEO fall back to the original copy.
 
