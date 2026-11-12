@@ -14,9 +14,13 @@ const AEF = "https://artesteducationfoundation.org/join-our-community";
 
 describe("CtaLink", () => {
   it("goes to its link, whether or not the form is on", () => {
-    const html = `<a href="${AEF}" class="btn">Join Our Community</a>`;
+    const html = `<a href="${AEF}" class="btn" target="_blank" rel="noopener noreferrer">Join Our Community</a>`;
     expect(render(AEF, true)).toBe(html);
     expect(render(AEF, false)).toBe(html);
+  });
+
+  it("opens links on this site in the same tab", () => {
+    expect(render("/#approach", true)).toBe('<a href="/#approach" class="btn">Join Our Community</a>');
   });
 
   it("opens the form when it has no link, as before links existed", () => {
