@@ -11,10 +11,11 @@ const REQUEST_ACCESS_HREF = "#request-access";
 export const CtaLink = ({ label, href, className }: { label: string; href?: string | null; className?: string }) => {
   const { enabled, open } = useRequestAccess();
 
-  // Same tab, like the site's other links: going there is the button's whole job.
   if (href && href !== REQUEST_ACCESS_HREF) {
+    // Another website opens in a new tab so the AMG site stays open behind it.
+    const external = /^https?:\/\//.test(href);
     return (
-      <a href={href} className={className}>
+      <a href={href} className={className} {...(external && { target: "_blank", rel: "noopener noreferrer" })}>
         {label}
       </a>
     );
