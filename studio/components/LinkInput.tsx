@@ -19,10 +19,11 @@ function SiteLinkInput({
 }: StringInputProps & { choices: Choice[]; emptyLabel: string }) {
   // The box shows for any saved value that isn't a dropdown choice, so a link
   // typed before the dropdown existed (e.g. "#") stays visible and editable.
-  // "picked" keeps it open between choosing "outside" and pasting a URL, and
-  // while a URL is cleared and retyped.
+  // Derived from the saved value, so undo or a collaborator's edit back to a
+  // choice can't leave the box showing. "picked" only keeps it open while
+  // there's no value: between choosing "outside" and pasting, or mid-retype.
   const [picked, setPicked] = useState(false);
-  const outside = picked || Boolean(value && !choices.some((choice) => choice.href === value));
+  const outside = value ? !choices.some((choice) => choice.href === value) : picked;
 
   return (
     <Stack gap={2}>
@@ -50,6 +51,7 @@ function SiteLinkInput({
           placeholder="Paste a link, e.g. https://artesteducationfoundation.org/join-our-community"
           onChange={(event) => {
             const url = event.currentTarget.value.trim();
+            setPicked(true);
             onChange(url ? set(url) : unset());
           }}
         />
